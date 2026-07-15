@@ -1,4 +1,4 @@
-const APP_VERSION='4.2.0';
+const APP_VERSION='4.3.1';
 const APP_BUILD_DATE='2026-07-15';
 const defaults={bread:{label:'パン・軽食',displayCount:6,items:[['サンド各種',1],['小倉トースト',1],['ハムチーズトースト',1]]},dessert:{label:'デザート',displayCount:6,items:[['プリンアラモード',1],['ベイクドチーズ',1],['ロールケーキ',1]]},ice:{label:'かき氷',displayCount:10,items:[['黒蜜きな粉',1],['ジンジャーココア',1],['クリームソーダ',1],['グリーンラッチー',1],['ピーチカスタード',1],['カフェオレ大福',1],['梅とうぐいす',1]]},other:{label:'その他',displayCount:6,items:[]}};
 let store=load();let activeCat='bread';let variant=0;let inputTimer;let emojiMode='none';let availability=null;let selectedReserveDates=new Set();let availabilityLoading=false;let weatherForecast=null;let weatherLoading=false;
@@ -9,7 +9,7 @@ function localIso(date=new Date()){const y=date.getFullYear(),m=String(date.getM
 function addDays(iso,days){const [y,m,d]=iso.split('-').map(Number);const x=new Date(y,m-1,d+days);return localIso(x)}
 function formatDate(v,weekday=false){const [y,m,d]=v.split('-').map(Number);const date=new Date(y,m-1,d);return weekday?`${m}/${d}（${'日月火水木金土'[date.getDay()]}）`:`${m}/${d}`}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-const learnedPatterns={openings:['おはようございます。','本日も営業いたします。',''],closings:['よろしくお願いいたします。','本日もよろしくお願いいたします。','ご来店お待ちしております。'],weather:{sunny:['津市は晴れの予報です。','津市はおおむね晴れの予報です。'],hot:['津市は晴れ、暑い一日になりそうです。','津市は気温が高くなる予報です。'],veryhot:['津市は厳しい暑さになる予報です。','津市は猛暑となる予報です。'],rain:['津市は雨の予報です。お足元にお気を付けてお越しください。','津市は雨が降る予報です。'],cloudy:['津市はくもりの予報です。','津市は雲の多い一日となる予報です。'],cool:['津市は少し涼しく感じられる予報です。','津市は比較的過ごしやすい気温の予報です。'],none:['']}};
+const learnedPatterns={openings:['おはようございます。','本日も営業いたします。',''],closings:['よろしくお願いいたします。','本日もよろしくお願いいたします。','ご来店お待ちしております。'],weather:{sunny:['今日は気持ちのよいお天気になりそうです。ひと息つきに、ぜひお立ち寄りください。','穏やかな一日になりそうです。店内でゆっくりお過ごしください。'],hot:['今日は暑い一日になりそうです。冷たいメニューでひと息つきに、ぜひお立ち寄りください。','暑さの合間に、店内でゆっくり涼んでいきませんか。'],veryhot:['今日も厳しい暑さになりそうです。冷たいメニューをご用意してお待ちしております。','暑さの厳しい一日です。どうぞ無理のないよう、涼みにお立ち寄りください。'],rain:['今日は雨の予報です。店内でゆっくりお過ごしいただけるメニューをご用意しています。お足元にお気を付けてお越しください。','雨の一日になりそうです。ほっとひと息つきに、ぜひお立ち寄りください。'],cloudy:['今日は雲の多い一日になりそうです。店内でゆっくり喫茶時間をお楽しみください。','少し落ち着いたお天気になりそうです。ひと休みにぜひお立ち寄りください。'],cool:['今日は少し過ごしやすい一日になりそうです。ゆっくり喫茶時間をお楽しみください。','心地よく過ごせそうな一日です。メニューをご用意してお待ちしております。'],none:['']}};
 const emojiSets={none:{weather:'',reserve:'',close:''},few:{weather:'',reserve:'❣️',close:''},many:{weather:'🌞',reserve:'❣️',close:'✨'}};
 function pick(arr,offset=0){return arr[(variant+offset)%arr.length]}
 function applyEmoji(text,kind){if(!text)return text;const e=emojiSets[emojiMode][kind]||'';if(!e)return text;const lines=text.split('\n');lines[lines.length-1]+=e;return lines.join('\n')}
