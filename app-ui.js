@@ -162,7 +162,7 @@ $('saveLiveRefreshSettings').onclick=saveLiveRefreshSettings;
 $('forgetLiveRefreshToken').onclick=forgetLiveRefreshToken;
 $('selectAvailable').onclick=()=>{
   selectedReserveDates.clear();
-  [0,1,2].map(i=>addDays(reservationBaseDate(),i)).forEach(date=>{
+  [0,1,2,3].map(i=>addDays(reservationBaseDate(),i)).forEach(date=>{
     const day=findDay(date);
     if(day?.status?.code==='available')selectedReserveDates.add(date);
   });

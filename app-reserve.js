@@ -199,7 +199,7 @@ function renderReservations(resetSelection=false){
   const ctx=getPostContext();
   const base=reservationBaseDate();
   const postDate=ctx.postDate;
-  const dates=[0,1,2].map(i=>addDays(base,i));
+  const dates=[0,1,2,3].map(i=>addDays(base,i));
   if(resetSelection){
     selectedReserveDates.clear();
     const first=findDay(base);

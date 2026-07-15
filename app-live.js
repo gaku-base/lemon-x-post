@@ -139,7 +139,7 @@ async function triggerLiveWorkflow(token){
       ref:cfg.ref,
       inputs:{
         start_date:$('postDate')?.value||localIso(),
-        days:'3'
+        days:'4'
       }
     }
   });
