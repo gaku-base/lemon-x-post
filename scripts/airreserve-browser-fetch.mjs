@@ -3,10 +3,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const AIR_RESERVE_URL =
-  process.env.AIR_RESERVE_URL ?? "https://airrsv.net/lemonnoki/calendar";
-const START_DATE = process.env.START_DATE ?? new Date().toISOString().slice(0, 10);
-const DAYS = Math.min(Math.max(Number(process.env.DAYS ?? 4), 1), 4);
+  process.env.AIR_RESERVE_URL || "https://airrsv.net/lemonnoki/calendar";
+const START_DATE =
+  process.env.START_DATE || new Date().toISOString().slice(0, 10);
+const DAYS = Math.min(Math.max(Number(process.env.DAYS || 4), 1), 4);
+
 const OUTPUT_DIR = path.resolve("data/airreserve-debug");
+const PUBLIC_JSON_PATH = path.resolve("data/availability.json");
 
 function addDays(isoDate, days) {
   const date = new Date(`${isoDate}T00:00:00+09:00`);
@@ -19,10 +22,10 @@ function unique(values) {
 }
 
 function normalize(text) {
-  return String(text ?? "").replace(/\s+/g, " ").trim();
+  return String(text || "").replace(/\s+/g, " ").trim();
 }
 
-function inferStatus(text, slots) {
+function inferStatus(text, slotCandidates) {
   if (
     text.includes("選択可能な予約メニューがありません") ||
     text.includes("予約可能なメニューがありません")
@@ -50,11 +53,11 @@ function inferStatus(text, slots) {
     };
   }
 
-  if (slots.length > 0) {
+  if (slotCandidates.length > 0) {
     return {
       code: "available",
       label: "空きあり",
-      reason: `${slots.length}件の予約枠候補を検出`
+      reason: `${slotCandidates.length}件の予約枠候補を検出`
     };
   }
 
@@ -66,44 +69,60 @@ function inferStatus(text, slots) {
 }
 
 async function visibleText(page) {
-  return normalize(await page.locator("body").innerText({ timeout: 15000 }));
-}
-
-async function collectInteractiveElements(page) {
-  return await page.locator(
-    'button, a, [role="button"], input, select, [tabindex]'
-  ).evaluateAll((elements) =>
-    elements.slice(0, 500).map((element, index) => {
-      const rect = element.getBoundingClientRect();
-      const style = getComputedStyle(element);
-
-      return {
-        index,
-        tag: element.tagName.toLowerCase(),
-        type: element.getAttribute("type") ?? "",
-        role: element.getAttribute("role") ?? "",
-        text: (element.innerText || element.getAttribute("aria-label") || element.getAttribute("title") || "").replace(/\s+/g, " ").trim().slice(0, 160),
-        value: "value" in element ? String(element.value ?? "").slice(0, 160) : "",
-        name: element.getAttribute("name") ?? "",
-        id: element.id ?? "",
-        className: String(element.className ?? "").slice(0, 200),
-        href: element instanceof HTMLAnchorElement ? element.href : "",
-        visible:
-          rect.width > 0 &&
-          rect.height > 0 &&
-          style.visibility !== "hidden" &&
-          style.display !== "none",
-        disabled:
-          "disabled" in element ? Boolean(element.disabled) : false
-      };
-    })
+  return normalize(
+    await page.locator("body").innerText({ timeout: 20000 })
   );
 }
 
-async function collectNetwork(page) {
+async function collectInteractiveElements(page) {
+  return await page
+    .locator('button, a, [role="button"], input, select, [tabindex]')
+    .evaluateAll((elements) =>
+      elements.slice(0, 500).map((element, index) => {
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+
+        return {
+          index,
+          tag: element.tagName.toLowerCase(),
+          type: element.getAttribute("type") || "",
+          role: element.getAttribute("role") || "",
+          text: (
+            element.innerText ||
+            element.getAttribute("aria-label") ||
+            element.getAttribute("title") ||
+            ""
+          )
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 160),
+          value:
+            "value" in element
+              ? String(element.value || "").slice(0, 160)
+              : "",
+          name: element.getAttribute("name") || "",
+          id: element.id || "",
+          className: String(element.className || "").slice(0, 200),
+          href:
+            element instanceof HTMLAnchorElement ? element.href : "",
+          visible:
+            rect.width > 0 &&
+            rect.height > 0 &&
+            style.visibility !== "hidden" &&
+            style.display !== "none",
+          disabled:
+            "disabled" in element ? Boolean(element.disabled) : false
+        };
+      })
+    );
+}
+
+function attachNetworkCollector(page) {
   const requests = [];
+
   const handler = (request) => {
     const url = request.url();
+
     if (
       /(reserve|reservation|calendar|schedule|slot|vacan|avail|menu|course|booking|search)/i.test(
         url
@@ -118,9 +137,12 @@ async function collectNetwork(page) {
   };
 
   page.on("request", handler);
+
   return {
     requests,
-    stop: () => page.off("request", handler)
+    stop() {
+      page.off("request", handler);
+    }
   };
 }
 
@@ -130,7 +152,7 @@ async function findDateControls(page, targetDate) {
   const day = date.getDate();
   const weekday = "日月火水木金土"[date.getDay()];
 
-  const candidates = [
+  const labels = unique([
     targetDate,
     targetDate.replaceAll("-", "/"),
     `${month}/${day}`,
@@ -139,23 +161,23 @@ async function findDateControls(page, targetDate) {
     `${day}日`,
     `${month}/${day}(${weekday})`,
     `${month}/${day}（${weekday}）`
-  ];
+  ]);
 
   const matches = [];
-  for (const candidate of candidates) {
-    const locator = page.getByText(candidate, { exact: true });
+
+  for (const label of labels) {
+    const locator = page.getByText(label, { exact: true });
     const count = await locator.count().catch(() => 0);
 
     for (let index = 0; index < Math.min(count, 10); index += 1) {
       const item = locator.nth(index);
+
       if (await item.isVisible().catch(() => false)) {
-        matches.push({
-          label: candidate,
-          locator: item
-        });
+        matches.push({ label, locator: item });
       }
     }
   }
+
   return matches;
 }
 
@@ -165,8 +187,9 @@ async function attemptDateSelection(page, targetDate) {
 
   for (const match of matches) {
     try {
-      await match.locator.click({ timeout: 2500 });
-      await page.waitForTimeout(1200);
+      await match.locator.click({ timeout: 3000 });
+      await page.waitForTimeout(1500);
+
       const after = await visibleText(page);
 
       if (after !== before) {
@@ -177,25 +200,27 @@ async function attemptDateSelection(page, targetDate) {
         };
       }
     } catch {
-      // 次の候補を試す
+      // 次の候補へ
     }
   }
 
-  const inputResult = await page.evaluate((targetDate) => {
-    const inputs = [...document.querySelectorAll('input[type="date"]')];
-    for (const input of inputs) {
-      if (!(input instanceof HTMLInputElement)) continue;
-      input.value = targetDate;
-      input.dispatchEvent(new Event("input", { bubbles: true }));
-      input.dispatchEvent(new Event("change", { bubbles: true }));
-      return true;
+  const changedInput = await page.evaluate((value) => {
+    const input = document.querySelector('input[type="date"]');
+
+    if (!(input instanceof HTMLInputElement)) {
+      return false;
     }
-    return false;
+
+    input.value = value;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    return true;
   }, targetDate);
 
-  if (inputResult) {
-    await page.waitForTimeout(1200);
+  if (changedInput) {
+    await page.waitForTimeout(1500);
     const after = await visibleText(page);
+
     return {
       success: after !== before,
       method: "input[type=date]",
@@ -212,30 +237,50 @@ async function attemptDateSelection(page, targetDate) {
 
 async function detectSlotCandidates(page) {
   return await page.locator("body").evaluate(() => {
-    const visible = (element) => {
+    function isVisible(element) {
       const rect = element.getBoundingClientRect();
       const style = getComputedStyle(element);
+
       return (
         rect.width > 0 &&
         rect.height > 0 &&
         style.display !== "none" &&
         style.visibility !== "hidden"
       );
-    };
+    }
 
     const results = [];
-    const timePattern = /(?:^|[^\d])([0-2]?\d:[0-5]\d)(?=[^\d]|$)/g;
+    const timePattern =
+      /(?:^|[^\d])([0-2]?\d:[0-5]\d)(?=[^\d]|$)/g;
 
-    for (const element of document.querySelectorAll("button,a,li,td,div,label")) {
-      if (!visible(element)) continue;
+    for (const element of document.querySelectorAll(
+      "button,a,li,td,div,label"
+    )) {
+      if (!isVisible(element)) {
+        continue;
+      }
 
-      const text = (element.innerText || "").replace(/\s+/g, " ").trim();
-      if (!text || text.length > 250) continue;
+      const text = (element.innerText || "")
+        .replace(/\s+/g, " ")
+        .trim();
 
-      const times = [...text.matchAll(timePattern)].map((match) => match[1]);
-      if (!times.length) continue;
+      if (!text || text.length > 250) {
+        continue;
+      }
 
-      if (!/(予約|空き|受付|残|○|△|満|時|分|〜|-)/.test(text)) continue;
+      const times = [...text.matchAll(timePattern)].map(
+        (match) => match[1]
+      );
+
+      if (times.length === 0) {
+        continue;
+      }
+
+      if (
+        !/(予約|空き|受付|残|○|△|満|時|分|〜|-)/.test(text)
+      ) {
+        continue;
+      }
 
       results.push({
         text,
@@ -253,118 +298,131 @@ async function main() {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    locale: "ja-JP",
-    timezoneId: "Asia/Tokyo",
-    viewport: { width: 1440, height: 1400 }
-  });
 
-  const page = await context.newPage();
-  const network = await collectNetwork(page);
+  try {
+    const context = await browser.newContext({
+      locale: "ja-JP",
+      timezoneId: "Asia/Tokyo",
+      viewport: {
+        width: 1440,
+        height: 1400
+      }
+    });
 
-  await page.goto(AIR_RESERVE_URL, {
-    waitUntil: "networkidle",
-    timeout: 60000
-  });
+    const page = await context.newPage();
+    const network = attachNetworkCollector(page);
 
-  await page.screenshot({
-    path: path.join(OUTPUT_DIR, "00-initial.png"),
-    fullPage: true
-  });
+    await page.goto(AIR_RESERVE_URL, {
+      waitUntil: "networkidle",
+      timeout: 60000
+    });
 
-  const initial = {
-    url: page.url(),
-    title: await page.title(),
-    text: await visibleText(page),
-    interactiveElements: await collectInteractiveElements(page)
-  };
-
-  const days = [];
-
-  for (let offset = 0; offset < DAYS; offset += 1) {
-    const targetDate = addDays(START_DATE, offset);
-    const selection = await attemptDateSelection(page, targetDate);
-
-    await page.waitForTimeout(800);
-
-    const text = await visibleText(page);
-    const slotCandidates = await detectSlotCandidates(page);
-    const slotTimes = unique(
-      slotCandidates.flatMap((candidate) => candidate.times)
-    );
-    const status = inferStatus(text, slotCandidates);
-
-    const screenshotName = `${String(offset + 1).padStart(2, "0")}-${targetDate}.png`;
     await page.screenshot({
-      path: path.join(OUTPUT_DIR, screenshotName),
+      path: path.join(OUTPUT_DIR, "00-initial.png"),
       fullPage: true
     });
 
-    days.push({
-      date: targetDate,
-      offset,
-      selection,
-      status,
-      slotTimes,
-      slotCandidates,
+    const initial = {
       url: page.url(),
-      visibleText: text
-    });
+      title: await page.title(),
+      text: await visibleText(page),
+      interactiveElements: await collectInteractiveElements(page)
+    };
+
+    const days = [];
+
+    for (let offset = 0; offset < DAYS; offset += 1) {
+      const targetDate = addDays(START_DATE, offset);
+      const selection = await attemptDateSelection(page, targetDate);
+
+      await page.waitForTimeout(1000);
+
+      const text = await visibleText(page);
+      const slotCandidates = await detectSlotCandidates(page);
+      const slotTimes = unique(
+        slotCandidates.flatMap((candidate) => candidate.times)
+      );
+      const status = inferStatus(text, slotCandidates);
+
+      const screenshotName =
+        `${String(offset + 1).padStart(2, "0")}-${targetDate}.png`;
+
+      await page.screenshot({
+        path: path.join(OUTPUT_DIR, screenshotName),
+        fullPage: true
+      });
+
+      days.push({
+        date: targetDate,
+        offset,
+        selection,
+        status,
+        slotTimes,
+        slotCandidates,
+        url: page.url(),
+        visibleText: text
+      });
+    }
+
+    network.stop();
+
+    const debugOutput = {
+      ok: true,
+      stage: "browser-automation-diagnostic-v2",
+      fetchedAt: new Date().toISOString(),
+      sourceUrl: AIR_RESERVE_URL,
+      startDate: START_DATE,
+      daysRequested: DAYS,
+      initial,
+      days,
+      networkRequests: network.requests
+    };
+
+    await fs.writeFile(
+      path.join(OUTPUT_DIR, "availability.json"),
+      JSON.stringify(debugOutput, null, 2),
+      "utf8"
+    );
+
+    const publicOutput = {
+      ok: true,
+      stage: debugOutput.stage,
+      fetchedAt: debugOutput.fetchedAt,
+      sourceUrl: debugOutput.sourceUrl,
+      startDate: debugOutput.startDate,
+      days: debugOutput.days.map((day) => ({
+        date: day.date,
+        status: day.status,
+        slotTimes: day.slotTimes,
+        slotCandidates: day.slotCandidates,
+        selection: day.selection
+      }))
+    };
+
+    await fs.writeFile(
+      PUBLIC_JSON_PATH,
+      JSON.stringify(publicOutput, null, 2),
+      "utf8"
+    );
+  } finally {
+    await browser.close();
   }
-
-  network.stop();
-
-  const output = {
-    ok: true,
-    stage: "browser-automation-diagnostic-v1",
-    fetchedAt: new Date().toISOString(),
-    sourceUrl: AIR_RESERVE_URL,
-    startDate: START_DATE,
-    daysRequested: DAYS,
-    initial,
-    days,
-    networkRequests: network.requests
-  };
-
-  await fs.writeFile(
-    path.join(OUTPUT_DIR, "availability.json"),
-    JSON.stringify(output, null, 2),
-    "utf8"
-  );
-
-  await fs.writeFile(
-    path.resolve("data/availability.json"),
-    JSON.stringify(
-      {
-        ok: output.ok,
-        stage: output.stage,
-        fetchedAt: output.fetchedAt,
-        sourceUrl: output.sourceUrl,
-        startDate: output.startDate,
-        days: output.days.map((day) => ({
-          date: day.date,
-          status: day.status,
-          slotTimes: day.slotTimes,
-          slotCandidates: day.slotCandidates,
-          selection: day.selection
-        }))
-      },
-      null,
-      2
-    ),
-    "utf8"
-  );
-
-  await browser.close();
 }
 
 main().catch(async (error) => {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
+
+  const message =
+    error instanceof Error
+      ? error.stack || error.message
+      : String(error);
+
   await fs.writeFile(
     path.join(OUTPUT_DIR, "error.txt"),
-    error instanceof Error ? error.stack ?? error.message : String(error),
+    message,
     "utf8"
   );
+
   console.error(error);
   process.exitCode = 1;
 });

@@ -1,95 +1,46 @@
-# Airリザーブ ブラウザ取得 第1版
+# Airリザーブ ブラウザ取得 V2
 
-## 目的
+前の版を置き換える修正版です。
 
-GitHub Actions上でPlaywrightのChromiumを起動し、Airリザーブを実際のブラウザとして開きます。
+## 修正点
 
-対象日は次の最大4日です。
+- `cache: npm` を削除
+- `package-lock.json` がなくても実行可能
+- `npm install --no-audit --no-fund` を使用
+- GitHub Actionsの入力値を安全に処理
+- 診断ファイルがない場合でもワークフロー自体を止めない
+- `actions/checkout@v4` と `actions/setup-node@v4` を使用
 
-- メニュー対象日
-- 翌日
-- 翌々日
-- 3日後
+## 入れ替えるもの
 
-実行結果は次に保存します。
-
-- `data/availability.json`
-- 実行時の各日スクリーンショット
-- 画面上の操作候補
-- 予約枠候補
-- 関連する通信URL
-
-## 重要
-
-これはブラウザ操作方式へ移行するための第1版です。
-
-Airリザーブ固有の日付ボタンや予約メニューの構造がまだ確定していないため、最初の実行では診断結果を取得します。スクリーンショットとJSONを確認して、正しいクリック対象を確定した後に予約枠抽出を固定します。
-
-## 追加するファイル
-
-このZIPの内容を `lemon-x-post` リポジトリ直下へコピーします。
+`lemon-x-post` フォルダー内の次を、このZIPの内容で上書きしてください。
 
 ```text
-lemon-x-post/
-├─ index.html
-├─ package.json
-├─ scripts/
-│  └─ airreserve-browser-fetch.mjs
-├─ data/
-│  └─ availability.json
-└─ .github/
-   └─ workflows/
-      └─ airreserve-browser-fetch.yml
+package.json
+README.md
+.github/
+data/
+scripts/
 ```
+
+`index.html` と `.git` は変更しません。
 
 ## GitHub Desktop
 
-1. ZIPを展開
-2. 展開した中身を `lemon-x-post` フォルダーへコピー
-3. GitHub Desktopに戻る
-4. Summaryに `Add Airリザーブ browser fetch`
-5. `Commit to main`
-6. `Push origin`
+1. 上書き後、GitHub Desktopへ戻る
+2. Summaryに `Rebuild Airリザーブ browser fetch`
+3. Commit to main
+4. Push origin
 
-## 手動実行
+## 実行
 
-1. GitHubで `lemon-x-post` を開く
-2. `Actions`
-3. `Airリザーブ ブラウザ取得`
-4. `Run workflow`
-5. 開始日を入力
-6. 日数は4
-7. 実行
+GitHubのActionsから、
 
-例：
+- start_date：2026-07-16
+- days：4
 
-```text
-start_date: 2026-07-16
-days: 4
-```
+で実行します。
 
-## 実行後
-
-Actionsの実行結果にある `airreserve-browser-debug` をダウンロードします。
-
-確認対象：
-
-- `availability.json`
-- `00-initial.png`
-- 各日付のPNG
-
-この結果から、予約メニュー、日付ボタン、空き枠の正しい選択方法を固定します。
-
-## 定期実行
-
-ワークフローは毎日日本時間7時頃に実行する設定です。GitHub ActionsのcronはUTCで記述されています。
-
-## 投稿アプリとの接続
-
-最終版ではGitHub Pages側から次を読みます。
-
-```text
-data/availability.json
-```
-
-予約枠なしの日は選択欄をグレーアウトし、赤文字で「予約枠なし」と表示します。当日の予約枠は、時間表示ありを初期値にして、表示なしをラジオスイッチで選べるようにします。
+成功すると、実行画面下部に
+`airreserve-browser-debug`
+が表示されます。
