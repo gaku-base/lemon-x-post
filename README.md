@@ -1,19 +1,30 @@
-# Airリザーブ ブラウザ取得 V2
+# Airリザーブ ブラウザ取得 V3
 
-前の版を置き換える修正版です。
+取得済みのスクリーンショットとJSONを基に修正した版です。
 
-## 修正点
+## V2で判明したこと
 
-- `cache: npm` を削除
-- `package-lock.json` がなくても実行可能
-- `npm install --no-audit --no-fund` を使用
-- GitHub Actionsの入力値を安全に処理
-- 診断ファイルがない場合でもワークフロー自体を止めない
-- `actions/checkout@v4` と `actions/setup-node@v4` を使用
+Airリザーブの週間予約表から、次を取得できます。
+
+- 日付
+- 開始時刻
+- 75分などの枠時間
+- 残数
+- 満席
+- 選択可能かどうか
+
+## V3の修正
+
+- 日付が1日前にずれる問題を修正
+- 日付をクリックせず、週間表の列を直接読む
+- 一つの満席枠だけで日全体を満席扱いしない
+- 日付ごとに予約枠を分離
+- 開始時刻、終了時刻、枠時間、残数を個別保存
+- 予約枠なし、満席、空きあり、受付開始前を区別
 
 ## 入れ替えるもの
 
-`lemon-x-post` フォルダー内の次を、このZIPの内容で上書きしてください。
+`lemon-x-post` フォルダー内の次を、このZIPの内容で上書きします。
 
 ```text
 package.json
@@ -25,22 +36,13 @@ scripts/
 
 `index.html` と `.git` は変更しません。
 
-## GitHub Desktop
-
-1. 上書き後、GitHub Desktopへ戻る
-2. Summaryに `Rebuild Airリザーブ browser fetch`
-3. Commit to main
-4. Push origin
-
 ## 実行
 
-GitHubのActionsから、
+GitHub Actionsで次を入力します。
 
-- start_date：2026-07-16
-- days：4
+```text
+start_date: 2026-07-16
+days: 4
+```
 
-で実行します。
-
-成功すると、実行画面下部に
-`airreserve-browser-debug`
-が表示されます。
+成功後、`data/availability.json` に日付別の結果が保存されます。
