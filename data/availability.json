@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "stage": "weekly-column-extraction-v3",
-  "fetchedAt": "2026-07-15T09:16:31.064Z",
+  "stage": "weekly-column-extraction-v4-fast",
+  "fetchedAt": "2026-07-15T09:25:44.092Z",
   "sourceUrl": "https://airrsv.net/lemonnoki/calendar",
   "startDate": "2026-07-15",
   "daysRequested": 4,
@@ -13,8 +13,8 @@
       "headerRect": {
         "left": 337,
         "right": 453.5625,
-        "top": 540,
-        "bottom": 575,
+        "top": 537,
+        "bottom": 572,
         "width": 116.5625,
         "height": 35,
         "centerX": 395.28125
@@ -22,8 +22,8 @@
       "cellRect": {
         "left": 337,
         "right": 455.84375,
-        "top": -386,
-        "bottom": 1918,
+        "top": -389,
+        "bottom": 1915,
         "width": 118.84375,
         "height": 2304,
         "centerX": 396.421875
@@ -45,8 +45,8 @@
       "headerRect": {
         "left": 453.5625,
         "right": 570.125,
-        "top": 540,
-        "bottom": 575,
+        "top": 537,
+        "bottom": 572,
         "width": 116.5625,
         "height": 35,
         "centerX": 511.84375
@@ -54,8 +54,8 @@
       "cellRect": {
         "left": 455.84375,
         "right": 574.6875,
-        "top": -386,
-        "bottom": 1918,
+        "top": -389,
+        "bottom": 1915,
         "width": 118.84375,
         "height": 2304,
         "centerX": 515.265625
@@ -352,8 +352,8 @@
       "headerRect": {
         "left": 570.125,
         "right": 686.6875,
-        "top": 540,
-        "bottom": 575,
+        "top": 537,
+        "bottom": 572,
         "width": 116.5625,
         "height": 35,
         "centerX": 628.40625
@@ -361,8 +361,8 @@
       "cellRect": {
         "left": 574.6875,
         "right": 693.53125,
-        "top": -386,
-        "bottom": 1918,
+        "top": -389,
+        "bottom": 1915,
         "width": 118.84375,
         "height": 2304,
         "centerX": 634.109375
@@ -680,8 +680,8 @@
       "headerRect": {
         "left": 686.6875,
         "right": 803.25,
-        "top": 540,
-        "bottom": 575,
+        "top": 537,
+        "bottom": 572,
         "width": 116.5625,
         "height": 35,
         "centerX": 744.96875
@@ -689,8 +689,8 @@
       "cellRect": {
         "left": 693.53125,
         "right": 812.375,
-        "top": -386,
-        "bottom": 1918,
+        "top": -389,
+        "bottom": 1915,
         "width": 118.84375,
         "height": 2304,
         "centerX": 752.953125
