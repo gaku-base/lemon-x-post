@@ -1,11 +1,43 @@
 {
   "ok": true,
   "stage": "weekly-column-extraction-v3",
-  "fetchedAt": "2026-07-15T05:36:16.914Z",
+  "fetchedAt": "2026-07-15T06:04:46.999Z",
   "sourceUrl": "https://airrsv.net/lemonnoki/calendar",
-  "startDate": "2026-07-16",
-  "daysRequested": 4,
+  "startDate": "2026-07-15",
+  "daysRequested": 7,
   "days": [
+    {
+      "date": "2026-07-15",
+      "label": "7/15(水)",
+      "weekday": "水",
+      "headerRect": {
+        "left": 337,
+        "right": 453.5625,
+        "top": 540,
+        "bottom": 575,
+        "width": 116.5625,
+        "height": 35,
+        "centerX": 395.28125
+      },
+      "cellRect": {
+        "left": 337,
+        "right": 455.84375,
+        "top": -386,
+        "bottom": 1918,
+        "width": 118.84375,
+        "height": 2304,
+        "centerX": 396.421875
+      },
+      "cellClassName": "scheduleBodyCell tdCell",
+      "cellBackgroundColor": "rgba(0, 0, 0, 0)",
+      "status": {
+        "code": "noSlots",
+        "label": "予約枠なし",
+        "reason": "この日付の列に予約枠がありません。"
+      },
+      "slots": [],
+      "availableSlots": []
+    },
     {
       "date": "2026-07-16",
       "label": "7/16(木)",
@@ -927,6 +959,218 @@
         "width": 118.84375,
         "height": 2304,
         "centerX": 871.796875
+      },
+      "cellClassName": "scheduleBodyCell tdCell",
+      "cellBackgroundColor": "rgba(0, 0, 0, 0)",
+      "status": {
+        "code": "noSlots",
+        "label": "予約枠なし",
+        "reason": "この日付の列に予約枠がありません。"
+      },
+      "slots": [],
+      "availableSlots": []
+    },
+    {
+      "date": "2026-07-20",
+      "label": "7/20(月)",
+      "weekday": "月",
+      "headerRect": {
+        "left": 919.8125,
+        "right": 1036.375,
+        "top": 540,
+        "bottom": 575,
+        "width": 116.5625,
+        "height": 35,
+        "centerX": 978.09375
+      },
+      "cellRect": {
+        "left": 931.21875,
+        "right": 1050.0625,
+        "top": -386,
+        "bottom": 1918,
+        "width": 118.84375,
+        "height": 2304,
+        "centerX": 990.640625
+      },
+      "cellClassName": "scheduleBodyCell tdCell",
+      "cellBackgroundColor": "rgba(0, 0, 0, 0)",
+      "status": {
+        "code": "full",
+        "label": "満席",
+        "reason": "すべての予約枠が満席です。"
+      },
+      "slots": [
+        {
+          "start": "10:30",
+          "end": "11:45",
+          "durationMinutes": 75,
+          "remaining": 4,
+          "full": true,
+          "clickable": false,
+          "text": "仮 10:30 75分 残4",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "11:45",
+          "end": "13:00",
+          "durationMinutes": 75,
+          "remaining": 4,
+          "full": true,
+          "clickable": false,
+          "text": "仮 11:45 75分 残4",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "13:00",
+          "end": "14:15",
+          "durationMinutes": 75,
+          "remaining": 4,
+          "full": true,
+          "clickable": false,
+          "text": "仮 13:00 75分 残4",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "14:15",
+          "end": "15:30",
+          "durationMinutes": 75,
+          "remaining": 4,
+          "full": true,
+          "clickable": false,
+          "text": "仮 14:15 75分 残4",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "11:00",
+          "end": "12:15",
+          "durationMinutes": 75,
+          "remaining": 3,
+          "full": true,
+          "clickable": false,
+          "text": "仮 11:00 75分 残3",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "12:15",
+          "end": "13:30",
+          "durationMinutes": 75,
+          "remaining": 3,
+          "full": true,
+          "clickable": false,
+          "text": "仮 12:15 75分 残3",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        },
+        {
+          "start": "13:30",
+          "end": "14:45",
+          "durationMinutes": 75,
+          "remaining": 3,
+          "full": true,
+          "clickable": false,
+          "text": "仮 13:30 75分 残3",
+          "className": "dataListItem js-lane is-full",
+          "anchorClassName": "dataLinkBox js-dataLinkBox",
+          "href": "https://airrsv.net/lemonnoki/calendar",
+          "pointerEvents": "auto",
+          "backgroundColor": "rgb(219, 219, 219)",
+          "color": "rgb(85, 85, 85)",
+          "parentClasses": [
+            "dataList",
+            "cellListItem",
+            "cellList is-data",
+            "cellListWrap js-selectMenu"
+          ]
+        }
+      ],
+      "availableSlots": []
+    },
+    {
+      "date": "2026-07-21",
+      "label": "7/21(火)",
+      "weekday": "火",
+      "headerRect": {
+        "left": 1036.375,
+        "right": 1153,
+        "top": 540,
+        "bottom": 575,
+        "width": 116.625,
+        "height": 35,
+        "centerX": 1094.6875
+      },
+      "cellRect": {
+        "left": 1050.0625,
+        "right": 1169,
+        "top": -386,
+        "bottom": 1918,
+        "width": 118.9375,
+        "height": 2304,
+        "centerX": 1109.53125
       },
       "cellClassName": "scheduleBodyCell tdCell",
       "cellBackgroundColor": "rgba(0, 0, 0, 0)",
