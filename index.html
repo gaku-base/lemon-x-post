@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff7df">
 <title>レモンの木 投稿づくり</title>
-<link rel="stylesheet" href="styles-base.css?v=431">
-<link rel="stylesheet" href="styles-manage.css?v=431">
+<link rel="stylesheet" href="styles-base.css?v=432">
+<link rel="stylesheet" href="styles-manage.css?v=432">
 </head>
 <body>
 <main class="app">
 <section class="hero">
-  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.3.1</span></div>
+  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.3.2</span></div>
   <h1>メニュー投稿づくり</h1>
   <p>メニュー対象日、投稿日の津市の天気、予約状況を選ぶと、来店につながる自然な投稿文へ更新されます。</p>
 </section>
@@ -47,12 +47,12 @@
   <p class="note">予約枠がない日は定休日として扱います。メニュー対象日が定休日の場合は、次回営業日のメニュー投稿へ自動で切り替えます。残り合計3枠以下は「残り枠わずか」、4〜8枠は「まだ空きがあります」、9枠以上は「比較的余裕があります」とします。</p>
 </section>
 <section class="card"><div class="card-title"><span class="step">4</span>投稿文</div><label class="small">絵文字の量</label><div class="emoji-switch" id="emojiSwitch"><button class="emoji-btn active" data-emoji="none">絵文字無し</button><button class="emoji-btn" data-emoji="few">少なめ</button><button class="emoji-btn" data-emoji="many">多め</button></div><button class="btn-primary" id="generate">新たに作成</button><div style="height:12px"></div><div class="preview" id="preview"></div><div class="meta"><span id="charCount">0文字</span><span id="generatedAt"></span></div><div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div></section>
-<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.3.1</span></footer>
+<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.3.2</span></footer>
 </main>
 <div class="modal" id="modal"><section class="sheet"><div class="sheet-head"><h2>メニュー管理</h2><button class="close" id="closeModal">×</button></div><div class="tabs" id="tabs"></div><div class="helper">メニューをタップすると表示／非表示が切り替わります。長押しして移動すると並べ替え、左へスワイプすると削除ボタンが出ます。</div><div class="manage-controls"><div><label class="small">投稿画面に表示する数</label><input class="count" id="displayCount" type="number" min="1" max="30"></div></div><div class="add-row"><input id="newMenu" type="text" placeholder="新しいメニュー名"><button class="add-btn" id="addMenu">追加</button></div><div class="menu-list" id="menuList"></div></section></div>
-<script src="app-core.js?v=431"></script>
-<script src="app-weather.js?v=431"></script>
-<script src="app-reserve.js?v=431"></script>
-<script src="app-ui.js?v=431"></script>
+<script src="app-core.js?v=432"></script>
+<script src="app-weather.js?v=432"></script>
+<script src="app-reserve.js?v=432"></script>
+<script src="app-ui.js?v=432"></script>
 </body>
 </html>
