@@ -1,3 +1,9 @@
+const DIRECT_REFRESH_CONFIG={
+  workerUrl:'https://divine-smoke-b143.mail-skgc.workers.dev',
+  timeoutMs:15*1000,
+  offsets:'0,1,2,3'
+};
+
 const LIVE_REFRESH_CONFIG={
   owner:'gaku-base',
   repo:'lemon-x-post',
@@ -43,8 +49,8 @@ function initLiveRefreshSettings(){
   const remember=$('rememberGithubToken');
   const input=$('githubActionsToken');
   if(remember)remember.checked=hasRememberedLiveToken();
-  if(input&&getLiveToken())input.placeholder='設定済みです。変更するときだけ入力してください';
-  liveStatus(getLiveToken()?'今すぐ取得を使用できます。':'初回のみGitHub更新用トークンを設定してください。',getLiveToken()?'ready':'neutral');
+  if(input&&getLiveToken())input.placeholder='予備取得用トークンは設定済みです';
+  liveStatus('Cloudflareから直接、最新状況を取得できます。','ready');
 }
 
 function saveLiveRefreshSettings(){
@@ -52,7 +58,7 @@ function saveLiveRefreshSettings(){
   const remember=$('rememberGithubToken');
   const token=input?.value.trim()||getLiveToken();
   if(!token){
-    liveStatus('GitHub更新用トークンを入力してください。','error');
+    liveStatus('予備取得用のGitHubトークンを入力してください。','error');
     return;
   }
   if(!/^(github_pat_|ghp_)/.test(token)){
@@ -62,11 +68,11 @@ function saveLiveRefreshSettings(){
   setLiveToken(token,!!remember?.checked);
   if(input){
     input.value='';
-    input.placeholder='設定済みです。変更するときだけ入力してください';
+    input.placeholder='予備取得用トークンは設定済みです';
   }
   const details=$('liveRefreshSettings');
   if(details)details.open=false;
-  liveStatus(remember?.checked?'この端末に設定を保存しました。':'このブラウザーを閉じるまで設定を保持します。','success');
+  liveStatus('予備取得用の設定を保存しました。','success');
 }
 
 function forgetLiveRefreshToken(){
@@ -75,7 +81,7 @@ function forgetLiveRefreshToken(){
   const remember=$('rememberGithubToken');
   if(input){input.value='';input.placeholder='github_pat_ から始まるトークン';}
   if(remember)remember.checked=false;
-  liveStatus('設定を削除しました。','neutral');
+  liveStatus('予備取得用の設定を削除しました。通常の直接取得は使用できます。','neutral');
 }
 
 function githubHeaders(token){
@@ -129,40 +135,71 @@ async function githubPublicApi(path){
   return data;
 }
 
+function directBaseDate(){
+  return $('menuDate')?.value||$('postDate')?.value||localIso();
+}
+
+async function fetchAvailabilityFromWorker(){
+  const cfg=DIRECT_REFRESH_CONFIG;
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),cfg.timeoutMs);
+  const started=Date.now();
+  const url=new URL('/availability',cfg.workerUrl);
+  url.searchParams.set('baseDate',directBaseDate());
+  url.searchParams.set('days',cfg.offsets);
+  url.searchParams.set('_',String(Date.now()));
+  try{
+    const response=await fetch(url.toString(),{
+      cache:'no-store',
+      signal:controller.signal,
+      headers:{'Accept':'application/json'}
+    });
+    const data=await response.json().catch(()=>null);
+    if(!response.ok||!data?.ok||!Array.isArray(data.days)){
+      const error=new Error(data?.error||`Cloudflare Worker HTTP ${response.status}`);
+      error.status=response.status;
+      error.source='worker';
+      throw error;
+    }
+    data.clientDurationMs=Date.now()-started;
+    return data;
+  }catch(error){
+    if(error?.name==='AbortError'){
+      const timeoutError=new Error('直接取得が15秒以内に完了しませんでした。');
+      timeoutError.source='worker';
+      throw timeoutError;
+    }
+    throw error;
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
 async function triggerLiveWorkflow(token){
   const cfg=LIVE_REFRESH_CONFIG;
   const triggeredAt=Date.now();
-  const requestId=`live-${triggeredAt}-${Math.random().toString(36).slice(2,8)}`;
-  const data=await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(cfg.workflow)}/dispatches`,{
+  await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(cfg.workflow)}/dispatches`,{
     method:'POST',
     token,
     body:{
       ref:cfg.ref,
       inputs:{
-        start_date:$('postDate')?.value||localIso(),
-        days:'4',
-        request_id:requestId
+        start_date:directBaseDate(),
+        days:'4'
       }
     }
   });
-  return {
-    triggeredAt,
-    requestId,
-    runId:data?.workflow_run_id||null,
-    runUrl:data?.html_url||''
-  };
+  return {triggeredAt,runId:null,runUrl:''};
 }
 
-async function findDispatchedRun(token,triggeredAt,requestId){
+async function findDispatchedRun(token,triggeredAt){
   const cfg=LIVE_REFRESH_CONFIG;
   const earliest=triggeredAt-15000;
-  for(let attempt=0;attempt<12;attempt+=1){
+  for(let attempt=0;attempt<20;attempt+=1){
     const data=await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(cfg.workflow)}/runs?event=workflow_dispatch&branch=${encodeURIComponent(cfg.ref)}&per_page=10`,{token});
-    const runs=data?.workflow_runs||[];
-    const run=runs.find(item=>item.display_title===requestId)
-      ||runs.find(item=>new Date(item.created_at).getTime()>=earliest);
+    const run=(data?.workflow_runs||[]).find(item=>new Date(item.created_at).getTime()>=earliest);
     if(run)return {runId:run.id,runUrl:run.html_url||''};
-    liveStatus('取得処理の開始を待っています…','loading');
+    liveStatus('予備取得の開始を待っています…','loading');
     await sleep(1000);
   }
   throw new Error('GitHub Actionsの実行番号を確認できませんでした。');
@@ -175,16 +212,16 @@ async function waitForWorkflow(token,runId,runUrl){
     const run=await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/runs/${runId}`,{token});
     if(run.status==='completed'){
       if(run.conclusion==='success')return run;
-      const error=new Error(`取得処理が${run.conclusion||'失敗'}で終了しました。`);
+      const error=new Error(`予備取得が${run.conclusion||'失敗'}で終了しました。`);
       error.runUrl=run.html_url||runUrl;
       throw error;
     }
     const elapsed=Math.max(0,Math.round((Date.now()-started)/1000));
-    const stage=run.status==='queued'?'開始待ち':'エアリザーブを確認中';
+    const stage=run.status==='queued'?'予備取得の開始待ち':'予備取得で確認中';
     liveStatus(`${stage}です… ${elapsed}秒`,'loading');
     await sleep(cfg.pollIntervalMs);
   }
-  const error=new Error('4分以内に取得が完了しませんでした。GitHub Actionsの状態を確認してください。');
+  const error=new Error('4分以内に予備取得が完了しませんでした。');
   error.runUrl=runUrl;
   throw error;
 }
@@ -198,13 +235,22 @@ function decodeGithubBase64(content){
 async function fetchAvailabilityFromGithub(){
   const cfg=LIVE_REFRESH_CONFIG;
   const data=await githubPublicApi(`/repos/${cfg.owner}/${cfg.repo}/contents/data/availability.json?ref=${encodeURIComponent(cfg.ref)}`);
-  if(!data?.content)throw new Error('最新の予約データを読み込めませんでした。');
+  if(!data?.content)throw new Error('予備取得した予約データを読み込めませんでした。');
   const availabilityData=JSON.parse(decodeGithubBase64(data.content));
-  if(!availabilityData?.ok||!Array.isArray(availabilityData.days))throw new Error('取得した予約データの形式が正しくありません。');
+  if(!availabilityData?.ok||!Array.isArray(availabilityData.days))throw new Error('予備取得データの形式が正しくありません。');
   return availabilityData;
 }
 
-function applyLiveAvailability(data){
+async function refreshViaGithubFallback(token){
+  let dispatch=await triggerLiveWorkflow(token);
+  const found=await findDispatchedRun(token,dispatch.triggeredAt);
+  dispatch={...dispatch,...found};
+  await waitForWorkflow(token,dispatch.runId,dispatch.runUrl);
+  liveStatus('予備取得した予約データを読み込んでいます…','loading');
+  return await fetchAvailabilityFromGithub();
+}
+
+function applyLiveAvailability(data,source='direct'){
   availability=data;
   availabilityLoading=false;
   selectedReserveDates.clear();
@@ -213,15 +259,18 @@ function applyLiveAvailability(data){
   renderReservations(false);
   const fetched=new Date(data.fetchedAt);
   const time=Number.isNaN(fetched.getTime())?'取得時刻不明':fetched.toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  $('reserveMessage').textContent=`エアリザーブを今すぐ確認しました。取得：${time}`;
+  const duration=Number(data.clientDurationMs||data.durationMs);
+  const durationText=Number.isFinite(duration)?`・${(duration/1000).toFixed(1)}秒` : '';
+  const sourceText=source==='direct'?'直接取得':'予備取得';
+  $('reserveMessage').textContent=`エアリザーブを${sourceText}しました。取得：${time}${durationText}`;
   $('reserveMessage').className='note live-success-note';
 }
 
 function explainLiveRefreshError(error){
-  if(error?.status===401)return 'トークンが正しくないか、有効期限が切れています。';
-  if(error?.status===403)return 'トークンに「Actions: Read and write」の権限がありません。';
-  if(error?.status===404)return '対象リポジトリまたは取得ワークフローを確認できません。';
-  return error?.message||'リアルタイム取得に失敗しました。';
+  if(error?.status===401)return '予備取得用トークンが正しくないか、有効期限が切れています。';
+  if(error?.status===403)return '予備取得用トークンに「Actions: Read and write」の権限がありません。';
+  if(error?.status===404)return '取得先または取得ワークフローを確認できません。';
+  return error?.message||'最新状況の取得に失敗しました。';
 }
 
 function setLiveRefreshDisabled(disabled){
@@ -235,44 +284,44 @@ function setLiveRefreshDisabled(disabled){
 
 async function refreshLiveAvailability(){
   if(liveRefreshRunning)return;
-  const token=getLiveToken();
-  if(!token){
-    const details=$('liveRefreshSettings');
-    if(details)details.open=true;
-    $('githubActionsToken')?.focus();
-    liveStatus('初回設定を完了してから、もう一度押してください。','warning');
-    return;
-  }
-
   liveRefreshRunning=true;
   setLiveRefreshDisabled(true);
   availabilityLoading=true;
   updateReserveHeader();
-  liveStatus('GitHub Actionsへ取得を依頼しています…','loading');
+  liveStatus('Cloudflareでエアリザーブを直接確認しています…','loading');
 
   try{
-    let dispatch=await triggerLiveWorkflow(token);
-    if(!dispatch.runId){
-      const found=await findDispatchedRun(token,dispatch.triggeredAt,dispatch.requestId);
-      dispatch={...dispatch,...found};
+    const directData=await fetchAvailabilityFromWorker();
+    applyLiveAvailability(directData,'direct');
+    const seconds=((directData.clientDurationMs||directData.durationMs||0)/1000).toFixed(1);
+    liveStatus(`最新状況への更新が完了しました（${seconds}秒）。`,'success');
+  }catch(directError){
+    console.error('Direct Airリザーブ fetch failed',directError);
+    const token=getLiveToken();
+    if(!token){
+      throw new Error(`${directError.message} 予備取得を使う場合はGitHubトークンを設定してください。`);
     }
-    await waitForWorkflow(token,dispatch.runId,dispatch.runUrl);
-    liveStatus('最新の予約データを読み込んでいます…','loading');
-    const data=await fetchAvailabilityFromGithub();
-    applyLiveAvailability(data);
-    liveStatus('最新状況への更新が完了しました。','success');
-  }catch(error){
-    availabilityLoading=false;
-    updateReserveHeader();
-    renderMenuDateStatus();
-    liveStatus(explainLiveRefreshError(error),'error');
-    $('reserveMessage').textContent=error?.runUrl
-      ?'取得処理を確認してください。GitHub Actionsへのリンクは初回設定欄から開けます。'
-      :'リアルタイム取得に失敗しました。設定と通信状態を確認してください。';
-    $('reserveMessage').className='note error-note';
-    console.error(error);
+    liveStatus('直接取得に失敗したため、予備取得へ切り替えています…','warning');
+    const fallbackData=await refreshViaGithubFallback(token);
+    applyLiveAvailability(fallbackData,'fallback');
+    liveStatus('予備取得で最新状況へ更新しました。','success');
   }finally{
     liveRefreshRunning=false;
     setLiveRefreshDisabled(false);
   }
 }
+
+const originalRefreshLiveAvailability=refreshLiveAvailability;
+refreshLiveAvailability=async function(){
+  try{
+    await originalRefreshLiveAvailability();
+  }catch(error){
+    availabilityLoading=false;
+    updateReserveHeader();
+    renderMenuDateStatus();
+    liveStatus(explainLiveRefreshError(error),'error');
+    $('reserveMessage').textContent='最新状況を取得できませんでした。保存済みデータは変更していません。';
+    $('reserveMessage').className='note error-note';
+    console.error(error);
+  }
+};

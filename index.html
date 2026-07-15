@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff7df">
 <title>レモンの木 投稿づくり</title>
-<link rel="stylesheet" href="styles-base.css?v=453">
-<link rel="stylesheet" href="styles-manage.css?v=453">
-<link rel="stylesheet" href="styles-live.css?v=453">
+<link rel="stylesheet" href="styles-base.css?v=460">
+<link rel="stylesheet" href="styles-manage.css?v=460">
+<link rel="stylesheet" href="styles-live.css?v=460">
 </head>
 <body>
 <main class="app">
 <section class="hero">
-  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.5.3</span></div>
+  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.6.0</span></div>
   <h1>メニュー投稿づくり</h1>
   <p>メニュー対象日、投稿日の津市の天気、予約状況を選ぶと、来店につながる自然な投稿文へ更新されます。</p>
 </section>
@@ -44,16 +44,16 @@
     </div>
     <div class="live-refresh-panel">
       <button class="btn-live-refresh" id="refreshLiveAvailability">エアリザーブから今すぐ取得</button>
-      <div class="live-refresh-status neutral" id="liveRefreshStatus">初回のみGitHub更新用トークンを設定してください。</div>
+      <div class="live-refresh-status neutral" id="liveRefreshStatus">Cloudflareから直接、最新状況を取得できます。</div>
       <details class="live-refresh-settings" id="liveRefreshSettings">
-        <summary>リアルタイム更新の初回設定</summary>
+        <summary>予備取得（GitHub Actions）の設定</summary>
         <div class="live-settings-body">
-          <label class="small" for="githubActionsToken">GitHub更新用トークン</label>
+          <label class="small" for="githubActionsToken">予備取得用GitHubトークン</label>
           <input type="password" id="githubActionsToken" autocomplete="off" spellcheck="false" placeholder="github_pat_ から始まるトークン">
           <label class="remember-token"><input type="checkbox" id="rememberGithubToken">この端末に保存する</label>
-          <div class="option-note">保存しない場合は、ブラウザーを閉じるまでだけ保持します。トークンは lemon-x-post の「Actions: Read and write」のみに制限してください。</div>
+          <div class="option-note">通常の直接取得には設定不要です。Cloudflare直接取得が失敗した場合の予備として使います。トークンは lemon-x-post の「Actions: Read and write」のみに制限してください。</div>
           <div class="live-settings-actions"><button class="btn-secondary btn-small" id="saveLiveRefreshSettings">設定を保存</button><button class="btn-text-danger" id="forgetLiveRefreshToken">設定を削除</button></div>
-          <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHubでfine-grained tokenを作成</a>
+          <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">予備取得用fine-grained tokenを作成</a>
         </div>
       </details>
     </div>
@@ -63,13 +63,13 @@
   <p class="note">予約状況は投稿日を含めて当日・翌日・翌々日・3日後の4日分を取得します。予約枠の開始時刻が12:00より前なら午前、12:00以降なら午後として分けて判定します。各時間帯の残り合計3枠以下は「残りわずか」、4〜8枠は「まだ空きあり」、9枠以上は「比較的ゆったり」と表現します。予約枠自体がない時間帯は満席とは表現しません。</p>
 </section>
 <section class="card"><div class="card-title"><span class="step">4</span>投稿文</div><label class="small">絵文字の量</label><div class="emoji-switch" id="emojiSwitch"><button class="emoji-btn active" data-emoji="none">絵文字無し</button><button class="emoji-btn" data-emoji="few">少なめ</button><button class="emoji-btn" data-emoji="many">多め</button></div><button class="btn-primary" id="generate">新たに作成</button><div style="height:12px"></div><div class="preview" id="preview"></div><div class="meta"><span id="charCount">0文字</span><span id="generatedAt"></span></div><div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div></section>
-<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.5.3</span></footer>
+<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.6.0</span></footer>
 </main>
 <div class="modal" id="modal"><section class="sheet"><div class="sheet-head"><h2>メニュー管理</h2><button class="close" id="closeModal">×</button></div><div class="tabs" id="tabs"></div><div class="helper">メニューをタップすると表示／非表示が切り替わります。長押しして移動すると並べ替え、左へスワイプすると削除ボタンが出ます。</div><div class="manage-controls"><div><label class="small">投稿画面に表示する数</label><input class="count" id="displayCount" type="number" min="1" max="30"></div></div><div class="add-row"><input id="newMenu" type="text" placeholder="新しいメニュー名"><button class="add-btn" id="addMenu">追加</button></div><div class="menu-list" id="menuList"></div></section></div>
-<script src="app-core.js?v=453"></script>
-<script src="app-weather.js?v=453"></script>
-<script src="app-reserve.js?v=453"></script>
-<script src="app-live.js?v=453"></script>
-<script src="app-ui.js?v=453"></script>
+<script src="app-core.js?v=460"></script>
+<script src="app-weather.js?v=460"></script>
+<script src="app-reserve.js?v=460"></script>
+<script src="app-live.js?v=460"></script>
+<script src="app-ui.js?v=460"></script>
 </body>
 </html>
