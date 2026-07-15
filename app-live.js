@@ -4,7 +4,7 @@ const LIVE_REFRESH_CONFIG={
   workflow:'airreserve-browser-fetch.yml',
   ref:'main',
   apiVersion:'2026-03-10',
-  pollIntervalMs:5000,
+  pollIntervalMs:2000,
   timeoutMs:4*60*1000
 };
 
@@ -139,7 +139,7 @@ async function triggerLiveWorkflow(token){
       ref:cfg.ref,
       inputs:{
         start_date:$('postDate')?.value||localIso(),
-        days:'7'
+        days:'3'
       }
     }
   });
