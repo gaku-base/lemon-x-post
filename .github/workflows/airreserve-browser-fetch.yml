@@ -1,4 +1,5 @@
 name: Airリザーブ ブラウザ取得
+run-name: ${{ inputs.request_id || 'Airリザーブ定期取得' }}
 
 on:
   workflow_dispatch:
@@ -11,6 +12,10 @@ on:
         description: "確認日数 1〜4"
         required: false
         default: "4"
+        type: string
+      request_id:
+        description: "アプリからの実行識別子"
+        required: false
         type: string
   schedule:
     - cron: "0 22,0,2,4,6,8 * * *"
@@ -28,7 +33,7 @@ permissions:
 
 concurrency:
   group: airreserve-browser-fetch
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   fetch:
@@ -45,14 +50,18 @@ jobs:
           node-version: "22"
 
       - name: 依存関係をインストール
-        run: npm install --no-audit --no-fund
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: npm install --no-audit --no-fund --prefer-offline
 
-      - name: Chromiumをインストール
-        run: npx playwright install --with-deps chromium
+      - name: 標準搭載Chromeを確認
+        run: google-chrome --version
 
       - name: Airリザーブ週間表を取得
         env:
           AIR_RESERVE_URL: "https://airrsv.net/lemonnoki/calendar"
+          PLAYWRIGHT_CHANNEL: "chrome"
+          DEBUG_SCREENSHOT: "0"
           START_DATE_INPUT: ${{ inputs.start_date }}
           DAYS_INPUT: ${{ inputs.days }}
         run: |

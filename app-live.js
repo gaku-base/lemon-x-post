@@ -4,7 +4,7 @@ const LIVE_REFRESH_CONFIG={
   workflow:'airreserve-browser-fetch.yml',
   ref:'main',
   apiVersion:'2026-03-10',
-  pollIntervalMs:2000,
+  pollIntervalMs:1000,
   timeoutMs:4*60*1000
 };
 
@@ -132,6 +132,7 @@ async function githubPublicApi(path){
 async function triggerLiveWorkflow(token){
   const cfg=LIVE_REFRESH_CONFIG;
   const triggeredAt=Date.now();
+  const requestId=`live-${triggeredAt}-${Math.random().toString(36).slice(2,8)}`;
   const data=await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(cfg.workflow)}/dispatches`,{
     method:'POST',
     token,
@@ -139,26 +140,30 @@ async function triggerLiveWorkflow(token){
       ref:cfg.ref,
       inputs:{
         start_date:$('postDate')?.value||localIso(),
-        days:'4'
+        days:'4',
+        request_id:requestId
       }
     }
   });
   return {
     triggeredAt,
+    requestId,
     runId:data?.workflow_run_id||null,
     runUrl:data?.html_url||''
   };
 }
 
-async function findDispatchedRun(token,triggeredAt){
+async function findDispatchedRun(token,triggeredAt,requestId){
   const cfg=LIVE_REFRESH_CONFIG;
   const earliest=triggeredAt-15000;
   for(let attempt=0;attempt<12;attempt+=1){
     const data=await githubApi(`/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(cfg.workflow)}/runs?event=workflow_dispatch&branch=${encodeURIComponent(cfg.ref)}&per_page=10`,{token});
-    const run=(data?.workflow_runs||[]).find(item=>new Date(item.created_at).getTime()>=earliest);
+    const runs=data?.workflow_runs||[];
+    const run=runs.find(item=>item.display_title===requestId)
+      ||runs.find(item=>new Date(item.created_at).getTime()>=earliest);
     if(run)return {runId:run.id,runUrl:run.html_url||''};
     liveStatus('取得処理の開始を待っています…','loading');
-    await sleep(3000);
+    await sleep(1000);
   }
   throw new Error('GitHub Actionsの実行番号を確認できませんでした。');
 }
@@ -248,7 +253,7 @@ async function refreshLiveAvailability(){
   try{
     let dispatch=await triggerLiveWorkflow(token);
     if(!dispatch.runId){
-      const found=await findDispatchedRun(token,dispatch.triggeredAt);
+      const found=await findDispatchedRun(token,dispatch.triggeredAt,dispatch.requestId);
       dispatch={...dispatch,...found};
     }
     await waitForWorkflow(token,dispatch.runId,dispatch.runUrl);
