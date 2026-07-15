@@ -1,7 +1,2569 @@
 {
-  "ok": false,
-  "stage": "not-run",
-  "fetchedAt": null,
+  "ok": true,
+  "stage": "browser-automation-diagnostic-v2",
+  "fetchedAt": "2026-07-15T05:14:16.769Z",
   "sourceUrl": "https://airrsv.net/lemonnoki/calendar",
-  "days": []
+  "startDate": "2026-07-16",
+  "days": [
+    {
+      "date": "2026-07-15",
+      "status": {
+        "code": "full",
+        "label": "満席",
+        "reason": "満席または満員の表示を検出"
+      },
+      "slotTimes": [
+        "10:30",
+        "11:45",
+        "13:00",
+        "14:15",
+        "11:00",
+        "12:15",
+        "13:30"
+      ],
+      "slotCandidates": [
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        }
+      ],
+      "selection": {
+        "success": false,
+        "method": "not-found",
+        "changed": false
+      }
+    },
+    {
+      "date": "2026-07-16",
+      "status": {
+        "code": "full",
+        "label": "満席",
+        "reason": "満席または満員の表示を検出"
+      },
+      "slotTimes": [
+        "10:30",
+        "11:45",
+        "13:00",
+        "14:15",
+        "11:00",
+        "12:15",
+        "13:30"
+      ],
+      "slotCandidates": [
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        }
+      ],
+      "selection": {
+        "success": false,
+        "method": "not-found",
+        "changed": false
+      }
+    },
+    {
+      "date": "2026-07-17",
+      "status": {
+        "code": "full",
+        "label": "満席",
+        "reason": "満席または満員の表示を検出"
+      },
+      "slotTimes": [
+        "10:30",
+        "11:45",
+        "13:00",
+        "14:15",
+        "11:00",
+        "12:15",
+        "13:30"
+      ],
+      "slotCandidates": [
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        }
+      ],
+      "selection": {
+        "success": false,
+        "method": "not-found",
+        "changed": false
+      }
+    },
+    {
+      "date": "2026-07-18",
+      "status": {
+        "code": "full",
+        "label": "満席",
+        "reason": "満席または満員の表示を検出"
+      },
+      "slotTimes": [
+        "10:30",
+        "11:45",
+        "13:00",
+        "14:15",
+        "11:00",
+        "12:15",
+        "13:30"
+      ],
+      "slotCandidates": [
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 仮 11:45 75分 残3 仮 13:00 75分 残1 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残3",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残1",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残2 仮 14:15 75分 残4 仮 11:00 75分 残1 仮 12:15 75分 残2 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残2",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 12:15 75分 残2",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0 満 仮 11:45 75分 残0 仮 13:00 75分 残3 仮 14:15 75分 残1 仮 11:00 75分 残1 満 仮 12:15 75分 残0 仮 13:30 75分 残2",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 10:30 75分 残0",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 11:45 75分 残0",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:00 75分 残3",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 14:15 75分 残1",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 11:00 75分 残1",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "満 仮 12:15 75分 残0",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-label01"
+        },
+        {
+          "text": "仮 13:30 75分 残2",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "td",
+          "className": "scheduleBodyCell tdCell"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "div",
+          "className": "cellListWrap js-selectMenu"
+        },
+        {
+          "text": "仮 10:30 75分 残4 仮 11:45 75分 残4 仮 13:00 75分 残4 仮 14:15 75分 残4 仮 11:00 75分 残3 仮 12:15 75分 残3 仮 13:30 75分 残3",
+          "times": [
+            "10:30",
+            "11:45",
+            "13:00",
+            "14:15",
+            "11:00",
+            "12:15",
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "cellListItem"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 10:30 75分 残4",
+          "times": [
+            "10:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:45 75分 残4",
+          "times": [
+            "11:45"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:00 75分 残4",
+          "times": [
+            "13:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 14:15 75分 残4",
+          "times": [
+            "14:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 11:00 75分 残3",
+          "times": [
+            "11:00"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 12:15 75分 残3",
+          "times": [
+            "12:15"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "li",
+          "className": "dataListItem js-lane is-full"
+        },
+        {
+          "text": "仮 13:30 75分 残3",
+          "times": [
+            "13:30"
+          ],
+          "tag": "a",
+          "className": "dataLinkBox js-dataLinkBox"
+        }
+      ],
+      "selection": {
+        "success": false,
+        "method": "not-found",
+        "changed": false
+      }
+    }
+  ]
 }
