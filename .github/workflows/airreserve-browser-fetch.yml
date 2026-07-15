@@ -8,10 +8,20 @@ on:
         required: false
         type: string
       days:
-        description: "確認日数 1〜4"
+        description: "確認日数 1〜7"
         required: false
-        default: "4"
+        default: "7"
         type: string
+  schedule:
+    - cron: "0 22,0,2,4,6,8 * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/airreserve-browser-fetch.mjs"
+      - "scripts/airreserve-extract.mjs"
+      - ".github/workflows/airreserve-browser-fetch.yml"
+      - "package.json"
 
 permissions:
   contents: write
@@ -55,7 +65,7 @@ jobs:
           if [ -n "$DAYS_INPUT" ]; then
             export DAYS="$DAYS_INPUT"
           else
-            export DAYS="4"
+            export DAYS="7"
           fi
 
           echo "START_DATE=$START_DATE"
