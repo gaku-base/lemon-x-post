@@ -1,0 +1,76 @@
+name: Airリザーブ ブラウザ取得
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "確認開始日 YYYY-MM-DD"
+        required: false
+        type: string
+      days:
+        description: "確認日数 1〜4"
+        required: false
+        default: "4"
+        type: string
+  schedule:
+    - cron: "0 22 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: airreserve-browser-fetch
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v5
+
+      - name: Node.jsを設定
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: 依存関係をインストール
+        run: npm install
+
+      - name: Chromiumをインストール
+        run: npx playwright install --with-deps chromium
+
+      - name: Airリザーブをブラウザ取得
+        env:
+          AIR_RESERVE_URL: "https://airrsv.net/lemonnoki/calendar"
+          START_DATE: ${{ inputs.start_date }}
+          DAYS: ${{ inputs.days || '4' }}
+        run: |
+          if [ -z "$START_DATE" ]; then
+            export START_DATE="$(TZ=Asia/Tokyo date +%F)"
+          fi
+          npm run airreserve:fetch
+
+      - name: 診断結果を保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airreserve-browser-debug
+          path: data/airreserve-debug/
+          retention-days: 14
+
+      - name: 取得JSONをGitHub Pagesへ反映
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/availability.json
+          if git diff --cached --quiet; then
+            echo "変更なし"
+          else
+            git commit -m "Update Airリザーブ availability"
+            git push
+          fi
