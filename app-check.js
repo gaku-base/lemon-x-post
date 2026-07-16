@@ -27,9 +27,9 @@ function sortedCheckSlots(day){
 function checkSlotState(slot){
   const remaining=Number(slot?.remaining);
   const positiveRemaining=Number.isFinite(remaining)&&remaining>0;
-  if(positiveRemaining&&slot?.clickable!==true)return 'waiting';
   if(remaining===0||(slot?.full===true&&!positiveRemaining))return 'full';
-  if(slot?.clickable===true)return 'available';
+  if(positiveRemaining&&reservationSlotLooksAvailable(slot))return 'available';
+  if(positiveRemaining&&slot?.clickable===true)return 'available';
   return 'waiting';
 }
 

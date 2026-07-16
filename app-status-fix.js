@@ -1,6 +1,67 @@
 const PUBLICATION_WAITING_CODE='notOpen';
 const CREATION_PENDING_CODE='notCreated';
 
+function reservationRgbValues(value){
+  const match=String(value||'').match(
+    /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/i
+  );
+  if(!match)return null;
+  return [
+    Number(match[1]),
+    Number(match[2]),
+    Number(match[3]),
+    match[4]===undefined?1:Number(match[4])
+  ];
+}
+
+function reservationLooksAvailableColor(value){
+  const rgb=reservationRgbValues(value);
+  if(!rgb)return false;
+  const [red,green,blue,alpha]=rgb;
+  if(alpha===0)return false;
+  return green>=215&&blue>=220&&red<=225&&(green-red>=5||blue-red>=8);
+}
+
+function reservationLooksWaitingColor(value){
+  const rgb=reservationRgbValues(value);
+  if(!rgb)return false;
+  const [red,green,blue,alpha]=rgb;
+  if(alpha===0)return false;
+  const spread=Math.max(red,green,blue)-Math.min(red,green,blue);
+  return spread<=12&&red>=165&&red<=235&&green>=165&&green<=235&&blue>=165&&blue<=235;
+}
+
+function reservationSlotVisualColors(slot){
+  return [
+    slot?.backgroundColor,
+    ...(Array.isArray(slot?.visualBackgroundColors)?slot.visualBackgroundColors:[])
+  ].filter(Boolean);
+}
+
+function reservationSlotLooksAvailable(slot){
+  const classText=[
+    slot?.className,
+    slot?.anchorClassName,
+    ...(Array.isArray(slot?.parentClasses)?slot.parentClasses:[])
+  ].join(' ');
+
+  const classHint=
+    /(^|\s)is-label\d+(\s|$)/i.test(classText)||
+    /(^|\s)(available|reservable|selectable|bookable)(\s|$)/i.test(classText);
+  const colorHint=reservationSlotVisualColors(slot).some(reservationLooksAvailableColor);
+
+  return classHint||colorHint||slot?.availableClassHint===true||slot?.availableColorHint===true;
+}
+
+function reservationSlotLooksWaiting(slot){
+  const colors=reservationSlotVisualColors(slot);
+  return (
+    slot?.publicationWaiting===true||
+    slot?.waitingColorHint===true||
+    colors.some(reservationLooksWaitingColor)
+  );
+}
+
 function normalizeReservationStatusAvailability(data){
   if(!data||!Array.isArray(data.days))return data;
 
@@ -15,9 +76,28 @@ function normalizeReservationStatusAvailability(data){
       const positiveRemaining=Number.isFinite(remaining)&&remaining>0;
       const definitelyFull=remaining===0||(slot?.full===true&&!positiveRemaining);
 
-      if(positiveRemaining&&slot?.clickable!==true){
+      const visuallyAvailable=positiveRemaining&&reservationSlotLooksAvailable(slot);
+      const visuallyWaiting=positiveRemaining&&reservationSlotLooksWaiting(slot);
+
+      if(visuallyAvailable){
         slot.full=false;
+        slot.clickable=true;
+        slot.publicationWaiting=false;
+        slot.detectionReason=slot.detectionReason||'app-available-visual';
+        hasAvailable=true;
+        allDefinitelyFull=false;
+      }else if(
+        positiveRemaining&&
+        (
+          visuallyWaiting||
+          slot?.publicationWaiting===true||
+          slot?.clickable!==true
+        )
+      ){
+        slot.full=false;
+        slot.clickable=false;
         slot.publicationWaiting=true;
+        slot.detectionReason=slot.detectionReason||'app-waiting-fallback';
         hasPublicationWaiting=true;
         allDefinitelyFull=false;
       }else if(positiveRemaining&&slot?.clickable===true){
@@ -29,6 +109,12 @@ function normalizeReservationStatusAvailability(data){
         allDefinitelyFull=false;
       }
     });
+
+    day.availableSlots=slots.filter(slot=>
+      slot?.full!==true&&
+      Number(slot?.remaining)!==0&&
+      slot?.clickable===true
+    );
 
     if(hasAvailable){
       day.status={
