@@ -1,7 +1,14 @@
 const DIRECT_REFRESH_CONFIG={
   workerUrl:'https://divine-smoke-b143.mail-skgc.workers.dev',
-  timeoutMs:15*1000,
+  timeoutMs:20*1000,
   offsets:'0,1,2,3'
+};
+
+const AUTO_REFRESH_CONFIG={
+  intervalMs:3*60*1000,
+  idleMs:3*60*1000,
+  minimumWorkerVersion:'1.1.0',
+  healthTimeoutMs:8*1000
 };
 
 const LIVE_REFRESH_CONFIG={
@@ -17,6 +24,17 @@ const LIVE_REFRESH_CONFIG={
 const LIVE_TOKEN_SESSION_KEY='lemonLiveGithubTokenSession';
 const LIVE_TOKEN_LOCAL_KEY='lemonLiveGithubTokenLocal';
 let liveRefreshRunning=false;
+let autoRefreshInitialized=false;
+let autoRefreshSupported=false;
+let autoRefreshPaused=true;
+let autoRefreshPauseReason='開始準備中';
+let autoRefreshTimer=null;
+let autoRefreshIdleTimer=null;
+let autoRefreshDisplayTimer=null;
+let nextAutoRefreshAt=0;
+let lastUserActivityAt=Date.now();
+let lastLiveFetchAt=null;
+let lastLiveFetchDurationMs=null;
 
 function liveStatus(message,type='neutral'){
   const box=$('liveRefreshStatus');
@@ -139,6 +157,233 @@ function directBaseDate(){
   return $('menuDate')?.value||$('postDate')?.value||localIso();
 }
 
+function formatLiveDateTime(value){
+  const date=value instanceof Date?value:new Date(value);
+  if(Number.isNaN(date.getTime()))return '不明';
+  return date.toLocaleString('ja-JP',{
+    month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+}
+
+function formatClock(value){
+  const date=value instanceof Date?value:new Date(value);
+  if(Number.isNaN(date.getTime()))return '--:--:--';
+  return date.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function compareVersion(current,minimum){
+  const a=String(current||'0').split('.').map(value=>Number(value)||0);
+  const b=String(minimum||'0').split('.').map(value=>Number(value)||0);
+  const length=Math.max(a.length,b.length);
+  for(let index=0;index<length;index+=1){
+    const difference=(a[index]||0)-(b[index]||0);
+    if(difference!==0)return difference;
+  }
+  return 0;
+}
+
+function setAutoRefreshState(text,type='waiting'){
+  const state=$('autoRefreshState');
+  const panel=$('autoRefreshInfo');
+  if(state)state.textContent=text;
+  if(panel)panel.className=`auto-refresh-info ${type}`;
+}
+
+function renderAutoRefreshInfo(){
+  const last=$('autoRefreshLastFetched');
+  const duration=$('autoRefreshDuration');
+  if(last)last.textContent=lastLiveFetchAt?formatLiveDateTime(lastLiveFetchAt):'未取得';
+  if(duration)duration.textContent=Number.isFinite(lastLiveFetchDurationMs)
+    ?`${(lastLiveFetchDurationMs/1000).toFixed(1)}秒`
+    :'—';
+
+  if(liveRefreshRunning){
+    setAutoRefreshState('取得中','loading');
+    return;
+  }
+  if(!autoRefreshSupported){
+    setAutoRefreshState(autoRefreshPauseReason||'Worker更新待ち','waiting');
+    return;
+  }
+  if(autoRefreshPaused){
+    setAutoRefreshState(autoRefreshPauseReason||'停止中','stopped');
+    return;
+  }
+  if(nextAutoRefreshAt){
+    setAutoRefreshState(`稼働中（次回 ${formatClock(nextAutoRefreshAt)}頃）`,'running');
+    return;
+  }
+  setAutoRefreshState('稼働中','running');
+}
+
+function clearAutoRefreshTimer(){
+  if(autoRefreshTimer)clearTimeout(autoRefreshTimer);
+  autoRefreshTimer=null;
+  nextAutoRefreshAt=0;
+}
+
+function clearAutoRefreshIdleTimer(){
+  if(autoRefreshIdleTimer)clearTimeout(autoRefreshIdleTimer);
+  autoRefreshIdleTimer=null;
+}
+
+function pauseAutoRefresh(reason){
+  clearAutoRefreshTimer();
+  clearAutoRefreshIdleTimer();
+  autoRefreshPaused=true;
+  autoRefreshPauseReason=reason;
+  renderAutoRefreshInfo();
+}
+
+function scheduleIdleStop(){
+  clearAutoRefreshIdleTimer();
+  if(!autoRefreshSupported||autoRefreshPaused||document.hidden)return;
+  const remaining=Math.max(0,AUTO_REFRESH_CONFIG.idleMs-(Date.now()-lastUserActivityAt));
+  autoRefreshIdleTimer=setTimeout(()=>{
+    const idleMs=Date.now()-lastUserActivityAt;
+    if(idleMs>=AUTO_REFRESH_CONFIG.idleMs){
+      pauseAutoRefresh('無操作のため停止中');
+      liveStatus('3分間操作がなかったため、自動更新を停止しました。画面を操作すると再開します。','neutral');
+    }else{
+      scheduleIdleStop();
+    }
+  },remaining+50);
+}
+
+function scheduleAutoRefresh(delay=AUTO_REFRESH_CONFIG.intervalMs){
+  clearAutoRefreshTimer();
+  if(!autoRefreshSupported||autoRefreshPaused||document.hidden)return;
+  nextAutoRefreshAt=Date.now()+delay;
+  autoRefreshTimer=setTimeout(async()=>{
+    autoRefreshTimer=null;
+    nextAutoRefreshAt=0;
+    if(document.hidden){
+      pauseAutoRefresh('画面が非表示のため停止中');
+      return;
+    }
+    if(Date.now()-lastUserActivityAt>=AUTO_REFRESH_CONFIG.idleMs){
+      pauseAutoRefresh('無操作のため停止中');
+      liveStatus('3分間操作がなかったため、自動更新を停止しました。画面を操作すると再開します。','neutral');
+      return;
+    }
+    await refreshLiveAvailability({reason:'auto'});
+  },Math.max(0,delay));
+  renderAutoRefreshInfo();
+}
+
+function resumeAutoRefresh({immediate=true,message=true}={}){
+  if(!autoRefreshSupported||document.hidden)return;
+  autoRefreshPaused=false;
+  autoRefreshPauseReason='';
+  lastUserActivityAt=Date.now();
+  scheduleIdleStop();
+  renderAutoRefreshInfo();
+  if(message)liveStatus('操作を検知したため、自動更新を再開しました。','ready');
+  if(immediate&&!liveRefreshRunning){
+    refreshLiveAvailability({reason:'resume'});
+  }else if(!liveRefreshRunning){
+    scheduleAutoRefresh();
+  }
+}
+
+function recordUserActivity(){
+  if(!autoRefreshInitialized)return;
+  const wasPaused=autoRefreshPaused;
+  lastUserActivityAt=Date.now();
+  if(autoRefreshSupported&&!document.hidden){
+    if(wasPaused)resumeAutoRefresh({immediate:true,message:true});
+    else scheduleIdleStop();
+  }
+}
+
+function installActivityTracking(){
+  ['pointerdown','keydown','input','change','touchstart'].forEach(eventName=>{
+    document.addEventListener(eventName,recordUserActivity,{passive:true,capture:true});
+  });
+  window.addEventListener('scroll',recordUserActivity,{passive:true,capture:true});
+  window.addEventListener('focus',()=>{
+    if(autoRefreshInitialized&&autoRefreshSupported&&!document.hidden){
+      resumeAutoRefresh({immediate:true,message:false});
+    }
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){
+      pauseAutoRefresh('画面が非表示のため停止中');
+    }else if(autoRefreshSupported){
+      resumeAutoRefresh({immediate:true,message:false});
+    }
+  });
+}
+
+async function checkWorkerForAutoRefresh(){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),AUTO_REFRESH_CONFIG.healthTimeoutMs);
+  try{
+    const url=new URL('/health',DIRECT_REFRESH_CONFIG.workerUrl);
+    url.searchParams.set('_',String(Date.now()));
+    const response=await fetch(url.toString(),{
+      cache:'no-store',
+      signal:controller.signal,
+      headers:{'Accept':'application/json'}
+    });
+    const data=await response.json().catch(()=>null);
+    return {
+      ok:response.ok&&data?.ok===true,
+      version:String(data?.version||'0.0.0'),
+      data
+    };
+  }catch(error){
+    return {ok:false,version:'0.0.0',error};
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
+async function waitForSavedAvailability(){
+  const limit=Date.now()+5000;
+  while(availabilityLoading&&Date.now()<limit)await sleep(100);
+  if(availability?.fetchedAt&&!lastLiveFetchAt){
+    const fetched=new Date(availability.fetchedAt);
+    if(!Number.isNaN(fetched.getTime()))lastLiveFetchAt=fetched;
+    const duration=Number(availability.clientDurationMs||availability.durationMs);
+    if(Number.isFinite(duration))lastLiveFetchDurationMs=duration;
+  }
+  renderAutoRefreshInfo();
+}
+
+async function initAutoLiveRefresh(){
+  if(autoRefreshInitialized)return;
+  autoRefreshInitialized=true;
+  installActivityTracking();
+  autoRefreshDisplayTimer=setInterval(renderAutoRefreshInfo,1000);
+  renderAutoRefreshInfo();
+  await waitForSavedAvailability();
+
+  const health=await checkWorkerForAutoRefresh();
+  if(!health.ok){
+    autoRefreshSupported=false;
+    autoRefreshPauseReason='Workerの確認に失敗しました';
+    liveStatus('Cloudflare Workerを確認できないため、自動更新は停止しています。手動更新は利用できます。','warning');
+    renderAutoRefreshInfo();
+    return;
+  }
+  if(compareVersion(health.version,AUTO_REFRESH_CONFIG.minimumWorkerVersion)<0){
+    autoRefreshSupported=false;
+    autoRefreshPauseReason='Worker v1.1.0更新待ち';
+    liveStatus('無料枠保護版Workerへ更新後、自動更新が有効になります。手動更新は利用できます。','warning');
+    renderAutoRefreshInfo();
+    return;
+  }
+
+  autoRefreshSupported=true;
+  autoRefreshPaused=false;
+  autoRefreshPauseReason='';
+  lastUserActivityAt=Date.now();
+  scheduleIdleStop();
+  renderAutoRefreshInfo();
+  await refreshLiveAvailability({reason:'startup'});
+}
+
 async function fetchAvailabilityFromWorker(){
   const cfg=DIRECT_REFRESH_CONFIG;
   const controller=new AbortController();
@@ -165,7 +410,7 @@ async function fetchAvailabilityFromWorker(){
     return data;
   }catch(error){
     if(error?.name==='AbortError'){
-      const timeoutError=new Error('直接取得が15秒以内に完了しませんでした。');
+      const timeoutError=new Error('直接取得が20秒以内に完了しませんでした。');
       timeoutError.source='worker';
       throw timeoutError;
     }
@@ -258,12 +503,16 @@ function applyLiveAvailability(data,source='direct'){
   if(isSelectable(findDay(base)))selectedReserveDates.add(base);
   renderReservations(false);
   const fetched=new Date(data.fetchedAt);
-  const time=Number.isNaN(fetched.getTime())?'取得時刻不明':fetched.toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const safeFetched=Number.isNaN(fetched.getTime())?new Date():fetched;
   const duration=Number(data.clientDurationMs||data.durationMs);
-  const durationText=Number.isFinite(duration)?`・${(duration/1000).toFixed(1)}秒` : '';
+  lastLiveFetchAt=safeFetched;
+  lastLiveFetchDurationMs=Number.isFinite(duration)?duration:null;
+  const durationText=Number.isFinite(duration)?`・所要 ${(duration/1000).toFixed(1)}秒`:'';
   const sourceText=source==='direct'?'直接取得':'予備取得';
-  $('reserveMessage').textContent=`エアリザーブを${sourceText}しました。取得：${time}${durationText}`;
+  $('reserveMessage').textContent=`エアリザーブを${sourceText}しました。最終取得：${formatLiveDateTime(safeFetched)}${durationText}`;
   $('reserveMessage').className='note live-success-note';
+  if($('fetchTime'))$('fetchTime').textContent=`取得：${formatLiveDateTime(safeFetched)}`;
+  renderAutoRefreshInfo();
 }
 
 function explainLiveRefreshError(error){
@@ -282,46 +531,77 @@ function setLiveRefreshDisabled(disabled){
   if($('reloadAvailability'))$('reloadAvailability').disabled=disabled;
 }
 
-async function refreshLiveAvailability(){
-  if(liveRefreshRunning)return;
+function refreshReasonText(reason){
+  if(reason==='startup')return '起動時の自動更新';
+  if(reason==='auto')return '3分ごとの自動更新';
+  if(reason==='resume')return '操作再開時の自動更新';
+  return '手動更新';
+}
+
+async function refreshLiveAvailability(options={}){
+  const reason=typeof options?.reason==='string'?options.reason:'manual';
+  if(liveRefreshRunning)return false;
+  if(reason==='auto'&&Date.now()-lastUserActivityAt>=AUTO_REFRESH_CONFIG.idleMs){
+    pauseAutoRefresh('無操作のため停止中');
+    return false;
+  }
+
   liveRefreshRunning=true;
+  clearAutoRefreshTimer();
   setLiveRefreshDisabled(true);
   availabilityLoading=true;
   updateReserveHeader();
-  liveStatus('Cloudflareでエアリザーブを直接確認しています…','loading');
+  renderAutoRefreshInfo();
+  liveStatus(`${refreshReasonText(reason)}：Cloudflareでエアリザーブを確認しています…`,'loading');
+  let success=false;
 
   try{
     const directData=await fetchAvailabilityFromWorker();
     applyLiveAvailability(directData,'direct');
     const seconds=((directData.clientDurationMs||directData.durationMs||0)/1000).toFixed(1);
     liveStatus(`最新状況への更新が完了しました（${seconds}秒）。`,'success');
+    success=true;
   }catch(directError){
     console.error('Direct Airリザーブ fetch failed',directError);
     const token=getLiveToken();
     if(!token){
-      throw new Error(`${directError.message} 予備取得を使う場合はGitHubトークンを設定してください。`);
+      availabilityLoading=false;
+      updateReserveHeader();
+      renderMenuDateStatus();
+      liveStatus(explainLiveRefreshError(new Error(`${directError.message} 予備取得を使う場合はGitHubトークンを設定してください。`)),'error');
+      $('reserveMessage').textContent='最新状況を取得できませんでした。保存済みデータは変更していません。';
+      $('reserveMessage').className='note error-note';
+    }else{
+      try{
+        liveStatus('直接取得に失敗したため、予備取得へ切り替えています…','warning');
+        const fallbackData=await refreshViaGithubFallback(token);
+        applyLiveAvailability(fallbackData,'fallback');
+        liveStatus('予備取得で最新状況へ更新しました。','success');
+        success=true;
+      }catch(error){
+        availabilityLoading=false;
+        updateReserveHeader();
+        renderMenuDateStatus();
+        liveStatus(explainLiveRefreshError(error),'error');
+        $('reserveMessage').textContent='最新状況を取得できませんでした。保存済みデータは変更していません。';
+        $('reserveMessage').className='note error-note';
+        console.error(error);
+      }
     }
-    liveStatus('直接取得に失敗したため、予備取得へ切り替えています…','warning');
-    const fallbackData=await refreshViaGithubFallback(token);
-    applyLiveAvailability(fallbackData,'fallback');
-    liveStatus('予備取得で最新状況へ更新しました。','success');
   }finally{
     liveRefreshRunning=false;
     setLiveRefreshDisabled(false);
+    renderAutoRefreshInfo();
+    if(autoRefreshSupported&&!autoRefreshPaused&&!document.hidden){
+      scheduleIdleStop();
+      scheduleAutoRefresh();
+    }
   }
+  return success;
 }
 
-const originalRefreshLiveAvailability=refreshLiveAvailability;
-refreshLiveAvailability=async function(){
-  try{
-    await originalRefreshLiveAvailability();
-  }catch(error){
-    availabilityLoading=false;
-    updateReserveHeader();
-    renderMenuDateStatus();
-    liveStatus(explainLiveRefreshError(error),'error');
-    $('reserveMessage').textContent='最新状況を取得できませんでした。保存済みデータは変更していません。';
-    $('reserveMessage').className='note error-note';
-    console.error(error);
-  }
-};
+if(document.readyState==='complete'){
+  setTimeout(initAutoLiveRefresh,0);
+}else{
+  window.addEventListener('load',()=>setTimeout(initAutoLiveRefresh,0),{once:true});
+}

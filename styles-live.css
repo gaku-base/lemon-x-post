@@ -29,6 +29,32 @@
 .live-refresh-status.success{background:#eaf5e7;color:#42633c}
 .live-refresh-status.warning{background:#fff4d4;color:#9b6428}
 .live-refresh-status.error{background:#fff0ef;color:#d95d57}
+.auto-refresh-info{
+  display:grid;
+  gap:6px;
+  padding:10px;
+  border:1px solid #d8e2d4;
+  border-radius:11px;
+  background:#fff;
+}
+.auto-refresh-row{
+  display:grid;
+  grid-template-columns:78px 1fr;
+  gap:8px;
+  align-items:start;
+  font-size:12px;
+  line-height:1.45;
+}
+.auto-refresh-row span{color:#7a7169}
+.auto-refresh-row strong{color:#4f5d49;overflow-wrap:anywhere}
+.auto-refresh-info.loading{border-color:#ead5a0;background:#fffaf0}
+.auto-refresh-info.loading .auto-refresh-row:last-child strong{color:#8c632a}
+.auto-refresh-info.running{border-color:#c8dabe;background:#f7fbf5}
+.auto-refresh-info.running .auto-refresh-row:last-child strong{color:#42633c}
+.auto-refresh-info.stopped{border-color:#dfd4ca;background:#faf7f3}
+.auto-refresh-info.stopped .auto-refresh-row:last-child strong{color:#75665c}
+.auto-refresh-info.waiting{border-color:#ead5a0;background:#fffaf0}
+.auto-refresh-info.waiting .auto-refresh-row:last-child strong{color:#9b6428}
 .live-refresh-settings{
   border-top:1px solid #d8e2d4;
   padding-top:8px;
@@ -83,4 +109,5 @@
 }
 @media(max-width:520px){
   .live-settings-actions{grid-template-columns:1fr}
+  .auto-refresh-row{grid-template-columns:72px 1fr}
 }
