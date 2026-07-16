@@ -21,3 +21,48 @@
 .detail-mode .auto-refresh-compact{display:none}.detail-mode .simple-instruction{display:none}.detail-mode .compact-hero p{display:block}
 @media(max-width:520px){
   .app{padding:10px 10px 36px}.compact-hero{padding:14px 15px}.compact-hero p{display:none}.display-mode-card{align-items:flex-start}.display-mode-card>div:first-child span{display:none}.display-mode-switch{min-width:142px}.card{padding:13px;border-radius:18px}.card-title{font-size:16px}.date-shortcut{font-size:11px;padding:9px 3px}.section-details>summary small{display:none}.reserve-day-top{align-items:flex-start}.reserve-date{font-size:13px}.reserve-state{font-size:11px}.post-card .preview{min-height:180px;font-size:14px;padding:13px}.actions button{padding:13px 9px}.auto-refresh-compact{font-size:11px}}
+
+/* v4.10.0 temporary POST CONCIERGE brand lockup */
+.compact-hero{position:relative;overflow:hidden;padding:0;border-radius:24px;background:linear-gradient(132deg,#fff9e9 0%,#ffedbb 58%,#f6d879 100%)}
+.compact-hero::after{content:'';position:absolute;right:-48px;bottom:-82px;width:220px;height:220px;border:1px solid rgba(101,79,38,.12);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.08),0 0 0 58px rgba(255,255,255,.05);pointer-events:none}
+.hero-brand{position:relative;z-index:1;display:grid;grid-template-columns:174px minmax(0,1fr);align-items:center;min-height:218px}
+.sandokun-mascot{position:relative;align-self:stretch;min-height:218px;overflow:hidden;background:#fff3df;border-right:1px solid rgba(137,103,47,.13);isolation:isolate}
+.sandokun-mascot::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 62%,rgba(255,243,223,.62) 86%,rgba(255,243,223,.96));pointer-events:none}
+.sandokun-mascot img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.hero-copy{min-width:0;padding:18px 22px 18px 18px}
+.hero-copy .hero-top{margin-bottom:8px}
+.brand-lockup{position:relative;padding:4px 0 9px}
+.brand-series{font-size:12px;font-weight:850;letter-spacing:.13em;color:#456242}
+.brand-series span{font-family:Georgia,"Times New Roman",serif;font-size:1.05em;font-style:italic;letter-spacing:.08em}
+.brand-lockup h1{margin:5px 0 4px;color:#233f2d;font-family:"Yu Mincho","Hiragino Mincho ProN","Hiragino Mincho Pro",Georgia,serif;font-size:37px;font-weight:700;line-height:.98;letter-spacing:-.055em;font-feature-settings:"palt"}
+.brand-lockup h1 span{display:block;margin-top:5px;color:#4f392b;font-size:.72em;letter-spacing:.02em}
+.brand-english{display:flex;align-items:center;gap:9px;color:#806747;font-family:Georgia,"Times New Roman",serif;font-size:9px;font-weight:700;letter-spacing:.25em}
+.brand-english::after{content:'';width:58px;height:1px;background:linear-gradient(90deg,#bb8b36,transparent)}
+.compact-hero .hero-copy p{max-width:470px;color:#66564a;font-size:12px;line-height:1.55}
+.compact-hero .eyebrow{font-size:10px;letter-spacing:.12em;color:#597151}
+.compact-hero .version-badge{position:relative;z-index:2;background:rgba(255,255,255,.72)}
+
+@media(max-width:520px){
+  .compact-hero{padding:0;border-radius:20px}
+  .hero-brand{grid-template-columns:106px minmax(0,1fr);min-height:148px}
+  .sandokun-mascot{min-height:148px}
+  .hero-copy{padding:11px 12px 11px 8px}
+  .hero-copy .hero-top{gap:5px;margin-bottom:4px}
+  .compact-hero .eyebrow{font-size:8px;letter-spacing:.07em;white-space:nowrap}
+  .compact-hero .version-badge{padding:3px 5px;font-size:8px}
+  .brand-lockup{padding:2px 0 5px}
+  .brand-series{font-size:9px;letter-spacing:.09em}
+  .brand-lockup h1{margin:4px 0 3px;font-size:27px;line-height:1;letter-spacing:-.07em}
+  .brand-lockup h1 span{margin-top:3px;font-size:.68em;letter-spacing:-.02em}
+  .brand-english{gap:6px;font-size:7px;letter-spacing:.16em}
+  .brand-english::after{width:28px}
+  .compact-hero .hero-copy p{display:none}
+}
+
+@media(max-width:370px){
+  .hero-brand{grid-template-columns:92px minmax(0,1fr);min-height:138px}
+  .sandokun-mascot{min-height:138px}
+  .hero-copy{padding-left:6px;padding-right:9px}
+  .brand-lockup h1{font-size:24px}
+  .brand-series{font-size:8px}
+}
