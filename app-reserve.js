@@ -388,6 +388,34 @@ function setActionsDisabled(disabled){
   $('openX').disabled=disabled;
 }
 
+const X_POST_WEIGHT_LIMIT=280;
+const X_JAPANESE_CHARACTER_LIMIT=140;
+let postTextEdited=false;
+
+function currentPostText(){
+  return $('preview').value;
+}
+
+function formatXEquivalent(weightedLength){
+  const equivalent=weightedLength/2;
+  return Number.isInteger(equivalent)?String(equivalent):equivalent.toFixed(1);
+}
+
+function updatePostCharacterCount(){
+  const text=currentPostText();
+  const result=window.twitterText.parseTweet(text);
+  const weightedLength=result.weightedLength;
+  const overWeight=Math.max(0,weightedLength-X_POST_WEIGHT_LIMIT);
+  const counter=$('charCount');
+  counter.textContent=overWeight>0
+    ?`X換算 ${formatXEquivalent(weightedLength)} / ${X_JAPANESE_CHARACTER_LIMIT}文字相当（${formatXEquivalent(overWeight)}文字分オーバー）`
+    :`X換算 ${formatXEquivalent(weightedLength)} / ${X_JAPANESE_CHARACTER_LIMIT}文字相当`;
+  counter.setAttribute('aria-label',`X公式換算 ${weightedLength} / ${X_POST_WEIGHT_LIMIT}`);
+  counter.classList.toggle('is-near-limit',weightedLength>=240&&overWeight===0);
+  counter.classList.toggle('is-over-limit',overWeight>0);
+  setActionsDisabled(!text.trim());
+}
+
 function holidayVisitLabel(ctx){
   const nextDate=ctx.menuClosed?ctx.nextBusiness?.date:ctx.effectiveMenuDate;
   if(!nextDate)return '次回営業日';
@@ -408,7 +436,8 @@ function buildClosing(ctx){
   return applyEmoji(pick(variants,2),'close');
 }
 
-function generatePost(){
+function generatePost(options={}){
+  if(postTextEdited&&options?.force!==true)return;
   const ctx=getPostContext();
   const displayDate=ctx.holidayMode?formatDate(ctx.postDate):formatDate(ctx.effectiveMenuDate);
   const menu=buildMenuLine(selectedMenus());
@@ -427,10 +456,10 @@ function generatePost(){
   if(limited)parts.push('',limited);
   parts.push('','最新状況は予約ページよりご確認ください。',closing);
   const text=parts.join('\n');
-  $('preview').textContent=text;
-  $('charCount').textContent=text.length+'文字';
+  $('preview').value=text;
+  postTextEdited=false;
+  updatePostCharacterCount();
   $('generatedAt').textContent='更新 '+new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
-  setActionsDisabled(!text.trim());
 }
 
 function realtime(){

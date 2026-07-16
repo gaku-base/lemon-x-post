@@ -141,7 +141,7 @@ document.querySelectorAll('[data-offset]').forEach(button=>button.onclick=()=>{
 });
 
 document.querySelectorAll('input[name="todayTime"]').forEach(radio=>radio.addEventListener('change',generatePost));
-$('generate').onclick=()=>{variant++;generatePost()};
+$('generate').onclick=()=>{variant++;generatePost({force:true})};
 $('postDate').addEventListener('change',()=>{
   syncDateShortcuts();
   renderMenuDateStatus();
@@ -168,9 +168,14 @@ $('selectAvailable').onclick=()=>{
   });
   renderReservations(false);
 };
+$('preview').addEventListener('input',()=>{
+  postTextEdited=true;
+  updatePostCharacterCount();
+  $('generatedAt').textContent='編集中';
+});
 $('copy').onclick=async()=>{
   try{
-    await navigator.clipboard.writeText($('preview').textContent);
+    await navigator.clipboard.writeText(currentPostText());
     const button=$('copy');
     const old=button.textContent;
     button.textContent='コピーしました';
@@ -179,7 +184,7 @@ $('copy').onclick=async()=>{
     alert('コピーできませんでした。Safariで開いてお試しください。');
   }
 };
-$('openX').onclick=()=>window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent($('preview').textContent),'_blank');
+$('openX').onclick=()=>window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(currentPostText()),'_blank');
 
 const today=localIso();
 $('postDate').value=today;
