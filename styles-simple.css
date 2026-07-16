@@ -1,0 +1,23 @@
+/* v4.8.0 simplified, task-first interface */
+.compact-hero{padding:16px 18px;border-radius:20px}
+.compact-hero h1{font-size:23px;margin-bottom:3px}
+.compact-hero p{font-size:13px;line-height:1.5}
+.display-mode-card{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.88);box-shadow:0 5px 14px rgba(96,78,67,.05)}
+.display-mode-card>div:first-child{display:grid;gap:2px}.display-mode-card strong{font-size:13px}.display-mode-card span{font-size:10px;color:#8d8076}
+.display-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:12px;background:#f2eee8;min-width:150px}
+.display-mode-switch button{padding:8px 11px;border-radius:9px;background:transparent;color:#76685f;font-size:12px}
+.display-mode-switch button.active{background:#fff;color:#526d4d;box-shadow:0 2px 8px rgba(96,78,67,.12)}
+.card{padding:15px}.card-title{margin-bottom:11px}.quick-label{display:block;font-size:13px;font-weight:900;color:#5d5148;margin-bottom:8px}.simple-instruction{font-size:12px;color:#82756c;margin:-2px 0 9px}
+.section-details{margin-top:12px;border-top:1px solid var(--line);padding-top:9px}
+.section-details>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;list-style:none;padding:4px 1px;color:#5b7255;font-size:12px;font-weight:900}
+.section-details>summary::-webkit-details-marker{display:none}.section-details>summary span::before{content:'＋';display:inline-grid;place-items:center;width:20px;height:20px;margin-right:7px;border-radius:50%;background:var(--green2);font-size:13px}.section-details[open]>summary span::before{content:'−'}
+.section-details>summary small{font-size:10px;font-weight:650;color:#998b81;text-align:right}.section-details-body{display:grid;gap:12px;padding:13px 1px 3px}
+.simple-weather{margin-top:10px;padding:10px 11px}.simple-weather .weather-detail{max-width:540px}
+.auto-refresh-compact{padding:9px 11px;border-radius:11px;font-size:12px;font-weight:800;line-height:1.45;background:#f7f3ed;color:#776a61}
+.auto-refresh-compact.loading{background:#fff4d4;color:#8c632a}.auto-refresh-compact.running,.auto-refresh-compact.success{background:#edf6e9;color:#42633c}.auto-refresh-compact.stopped,.auto-refresh-compact.neutral{background:#f5efe6;color:#75665c}.auto-refresh-compact.waiting,.auto-refresh-compact.warning{background:#fff4d4;color:#946128}.auto-refresh-compact.error{background:#fff0ef;color:#d95d57}
+.simplified-reserve-box{border-style:solid;background:#fffef8}.reserve-details{margin-top:2px}
+.post-card .preview{margin-top:12px}.post-card .actions{position:sticky;bottom:8px;z-index:5;padding:7px;border-radius:17px;background:rgba(255,250,241,.93);backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(96,78,67,.14)}
+.simple-mode .mini-btn{display:none}.detail-mode .mini-btn{display:inline-block}.simple-mode .reserve-slots{display:none}.simple-mode .fetch-time{display:none}.simple-mode .menu-date-status>span{display:none}.simple-mode .menu-date-status{padding:9px 11px}.simple-mode .reserve-day{padding:10px 11px;align-items:center}.simple-mode .reserve-day input{margin-top:0}.simple-mode .reserve-day-top{min-height:24px}.simple-mode .reserve-list{gap:6px}.simple-mode .card{box-shadow:0 5px 16px rgba(96,78,67,.055)}
+.detail-mode .auto-refresh-compact{display:none}.detail-mode .simple-instruction{display:none}.detail-mode .compact-hero p{display:block}
+@media(max-width:520px){
+  .app{padding:10px 10px 36px}.compact-hero{padding:14px 15px}.compact-hero p{display:none}.display-mode-card{align-items:flex-start}.display-mode-card>div:first-child span{display:none}.display-mode-switch{min-width:142px}.card{padding:13px;border-radius:18px}.card-title{font-size:16px}.date-shortcut{font-size:11px;padding:9px 3px}.section-details>summary small{display:none}.reserve-day-top{align-items:flex-start}.reserve-date{font-size:13px}.reserve-state{font-size:11px}.post-card .preview{min-height:180px;font-size:14px;padding:13px}.actions button{padding:13px 9px}.auto-refresh-compact{font-size:11px}}

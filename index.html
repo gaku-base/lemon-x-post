@@ -5,76 +5,134 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff7df">
 <title>レモンの木 投稿づくり</title>
-<link rel="stylesheet" href="styles-base.css?v=470">
-<link rel="stylesheet" href="styles-manage.css?v=470">
-<link rel="stylesheet" href="styles-live.css?v=470">
+<link rel="stylesheet" href="styles-base.css?v=480">
+<link rel="stylesheet" href="styles-manage.css?v=480">
+<link rel="stylesheet" href="styles-live.css?v=480">
+<link rel="stylesheet" href="styles-simple.css?v=480">
 </head>
-<body>
+<body class="simple-mode">
 <main class="app">
-<section class="hero">
-  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.7.0</span></div>
-  <h1>メニュー投稿づくり</h1>
-  <p>メニュー対象日、投稿日の津市の天気、予約状況を選ぶと、来店につながる自然な投稿文へ更新されます。</p>
+<section class="hero compact-hero">
+  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.8.0</span></div>
+  <h1>投稿づくり</h1>
+  <p>日付とメニューを選ぶだけで、予約状況を反映した投稿文を作成します。</p>
 </section>
-<section class="card">
-  <div class="card-title"><span class="step">1</span>基本情報</div>
-  <div class="grid">
-    <div><label class="small">投稿日</label><input type="date" id="postDate"></div>
-    <div><label class="small">天気の使用方法</label><select id="weatherMode"><option value="auto">津市の天気を自動使用</option><option value="sunny">晴れ</option><option value="hot">暑い・晴れ</option><option value="veryhot">猛暑</option><option value="rain">雨</option><option value="cloudy">くもり</option><option value="cool">少し涼しい</option><option value="none">天気文を入れない</option></select></div>
+
+<section class="display-mode-card" aria-label="画面表示の切り替え">
+  <div>
+    <strong>画面表示</strong>
+    <span>通常は「かんたん」で十分です</span>
   </div>
-  <div class="weather-box">
+  <div class="display-mode-switch" role="group" aria-label="画面表示">
+    <button type="button" id="simpleModeButton" class="active" aria-pressed="true">かんたん</button>
+    <button type="button" id="detailModeButton" aria-pressed="false">詳細</button>
+  </div>
+</section>
+
+<section class="card basic-card">
+  <div class="card-title"><span class="step">1</span><span>日付と天気</span></div>
+  <label class="quick-label">どの日のメニューを案内しますか？</label>
+  <div class="date-shortcuts" id="dateShortcuts">
+    <button class="date-shortcut" data-offset="0">今日</button>
+    <button class="date-shortcut" data-offset="1">明日</button>
+    <button class="date-shortcut" data-offset="2">明後日</button>
+    <button class="date-shortcut" data-offset="3">3日後</button>
+  </div>
+  <div class="menu-date-status loading" id="menuDateStatus"><strong>営業日を確認中です</strong><span>予約状況から営業日を判定します。</span></div>
+  <div class="weather-box simple-weather">
     <div class="weather-head"><div><strong id="weatherTitle">津市の天気を取得中です</strong><div class="weather-detail" id="weatherDetail"></div></div><span class="weather-pill loading" id="weatherBadge">取得中</span></div>
-    <button class="btn-secondary btn-small" id="reloadWeather">投稿日の天気を再取得</button>
-    <div class="weather-source">天気データ：Open-Meteo（津市中心部）</div>
   </div>
-  <div style="height:12px"></div>
-  <label class="small">メニュー対象日</label><input type="date" id="menuDate"><div class="menu-date-status loading" id="menuDateStatus"><strong>営業日を確認中です</strong><span>予約枠がない場合は定休日として、次回営業日の投稿へ切り替えます。</span></div>
-  <div class="date-shortcuts" id="dateShortcuts"><button class="date-shortcut" data-offset="0">当日</button><button class="date-shortcut" data-offset="1">翌日</button><button class="date-shortcut" data-offset="2">翌々日</button><button class="date-shortcut" data-offset="3">3日後</button></div>
-</section>
-<section class="card"><div class="card-title"><span class="step">2</span>メニュー</div><div id="menuArea"></div><div class="menu-head"><div class="menu-label">その他・限定メニュー</div></div><input id="customMenu" type="text" placeholder="例：梅とうぐいす、季節のタルト"><div class="menu-head"><div class="menu-label">数量や売り切れ情報</div></div><input id="limitedInfo" type="text" placeholder="例：ピーチは僅かなご用意です"></section>
-<section class="card">
-  <div class="card-title"><span class="step">3</span>Airリザーブの予約状況</div>
-  <div class="reserve-box">
-    <div class="reserve-head"><div class="reserve-summary"><strong id="reserveTitle">取得中です</strong><div class="fetch-time" id="fetchTime"></div></div><span class="status-pill loading" id="reserveBadge">取得中</span></div>
-    <div class="reserve-list" id="reserveList"></div>
-    <div class="time-option" id="todayTimeOption" hidden>
-      <label class="small">投稿日の空き時間を投稿文に表示</label>
-      <div class="radio-row"><label class="radio-label"><input type="radio" name="todayTime" value="show" checked>時間表示あり</label><label class="radio-label"><input type="radio" name="todayTime" value="hide">時間表示なし</label></div>
-      <div class="option-note">この選択は投稿日と同じ日の予約状況にだけ適用されます。</div>
-    </div>
-    <div class="live-refresh-panel">
-      <button class="btn-live-refresh" id="refreshLiveAvailability">エアリザーブから今すぐ取得</button>
-      <div class="live-refresh-status neutral" id="liveRefreshStatus">Cloudflareから直接、最新状況を取得できます。</div>
-      <div class="auto-refresh-info waiting" id="autoRefreshInfo">
-        <div class="auto-refresh-row"><span>最終取得</span><strong id="autoRefreshLastFetched">未取得</strong></div>
-        <div class="auto-refresh-row"><span>取得時間</span><strong id="autoRefreshDuration">—</strong></div>
-        <div class="auto-refresh-row"><span>自動更新</span><strong id="autoRefreshState">開始準備中</strong></div>
+  <details class="section-details" data-section="basic">
+    <summary><span>詳細設定</span><small>日付・天気を細かく指定</small></summary>
+    <div class="section-details-body">
+      <div class="grid">
+        <div><label class="small">投稿日</label><input type="date" id="postDate"></div>
+        <div><label class="small">メニュー対象日</label><input type="date" id="menuDate"></div>
       </div>
-      <details class="live-refresh-settings" id="liveRefreshSettings">
-        <summary>予備取得（GitHub Actions）の設定</summary>
-        <div class="live-settings-body">
-          <label class="small" for="githubActionsToken">予備取得用GitHubトークン</label>
-          <input type="password" id="githubActionsToken" autocomplete="off" spellcheck="false" placeholder="github_pat_ から始まるトークン">
-          <label class="remember-token"><input type="checkbox" id="rememberGithubToken">この端末に保存する</label>
-          <div class="option-note">通常の直接取得には設定不要です。Cloudflare直接取得が失敗した場合の予備として使います。トークンは lemon-x-post の「Actions: Read and write」のみに制限してください。</div>
-          <div class="live-settings-actions"><button class="btn-secondary btn-small" id="saveLiveRefreshSettings">設定を保存</button><button class="btn-text-danger" id="forgetLiveRefreshToken">設定を削除</button></div>
-          <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">予備取得用fine-grained tokenを作成</a>
-        </div>
-      </details>
+      <div>
+        <label class="small">天気の使用方法</label>
+        <select id="weatherMode">
+          <option value="auto">津市の天気を自動使用</option><option value="sunny">晴れ</option><option value="hot">暑い・晴れ</option><option value="veryhot">猛暑</option><option value="rain">雨</option><option value="cloudy">くもり</option><option value="cool">少し涼しい</option><option value="none">天気文を入れない</option>
+        </select>
+      </div>
+      <button class="btn-secondary btn-small" id="reloadWeather">投稿日の天気を再取得</button>
+      <div class="weather-source">天気データ：Open-Meteo（津市中心部）</div>
     </div>
-    <div class="btn-row"><button class="btn-secondary" id="reloadAvailability">保存済みデータを再読込</button><button class="btn-secondary btn-small" id="selectAvailable">空き日を選択</button></div>
-    <div id="reserveMessage" class="note"></div>
-  </div>
-  <p class="note">予約状況は投稿日を含めて4日分を取得します。アプリ起動時と操作中は3分ごとに自動更新し、3分間操作がなければ停止します。画面を再度操作すると、その時点で取得して自動更新を再開します。手動更新もいつでも利用できます。</p>
+  </details>
 </section>
-<section class="card"><div class="card-title"><span class="step">4</span>投稿文</div><label class="small">絵文字の量</label><div class="emoji-switch" id="emojiSwitch"><button class="emoji-btn active" data-emoji="none">絵文字無し</button><button class="emoji-btn" data-emoji="few">少なめ</button><button class="emoji-btn" data-emoji="many">多め</button></div><button class="btn-primary" id="generate">新たに作成</button><div style="height:12px"></div><div class="preview" id="preview"></div><div class="meta"><span id="charCount">0文字</span><span id="generatedAt"></span></div><div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div></section>
-<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.7.0</span></footer>
+
+<section class="card menu-card">
+  <div class="card-title"><span class="step">2</span><span>メニュー</span></div>
+  <p class="simple-instruction">投稿に載せるものをタップしてください。</p>
+  <div id="menuArea"></div>
+  <details class="section-details" data-section="menu">
+    <summary><span>詳細設定</span><small>限定メニュー・売り切れ情報・メニュー管理</small></summary>
+    <div class="section-details-body">
+      <div><label class="small">その他・限定メニュー</label><input id="customMenu" type="text" placeholder="例：梅とうぐいす、季節のタルト"></div>
+      <div><label class="small">数量や売り切れ情報</label><input id="limitedInfo" type="text" placeholder="例：ピーチは僅かなご用意です"></div>
+      <button type="button" class="btn-secondary" id="openMenuManager">メニューの追加・並べ替え</button>
+    </div>
+  </details>
+</section>
+
+<section class="card reserve-card">
+  <div class="card-title"><span class="step">3</span><span>予約状況</span></div>
+  <div class="reserve-box simplified-reserve-box">
+    <div class="reserve-head"><div class="reserve-summary"><strong id="reserveTitle">取得中です</strong><div class="fetch-time" id="fetchTime"></div></div><span class="status-pill loading" id="reserveBadge">取得中</span></div>
+    <div class="auto-refresh-compact waiting" id="autoRefreshCompact">自動更新の準備中です</div>
+    <div class="reserve-list" id="reserveList"></div>
+    <button class="btn-live-refresh" id="refreshLiveAvailability">今すぐ更新</button>
+    <div id="reserveMessage" class="note"></div>
+
+    <details class="section-details reserve-details" data-section="reserve">
+      <summary><span>詳細設定</span><small>取得情報・表示内容・予備取得</small></summary>
+      <div class="section-details-body">
+        <div class="time-option" id="todayTimeOption" hidden>
+          <label class="small">投稿日の空き時間を投稿文に表示</label>
+          <div class="radio-row"><label class="radio-label"><input type="radio" name="todayTime" value="show" checked>時間表示あり</label><label class="radio-label"><input type="radio" name="todayTime" value="hide">時間表示なし</label></div>
+          <div class="option-note">投稿日と同じ日の予約状況にのみ適用されます。</div>
+        </div>
+        <div class="auto-refresh-info waiting" id="autoRefreshInfo">
+          <div class="auto-refresh-row"><span>最終取得</span><strong id="autoRefreshLastFetched">未取得</strong></div>
+          <div class="auto-refresh-row"><span>取得時間</span><strong id="autoRefreshDuration">—</strong></div>
+          <div class="auto-refresh-row"><span>自動更新</span><strong id="autoRefreshState">開始準備中</strong></div>
+        </div>
+        <div class="live-refresh-status neutral" id="liveRefreshStatus">Cloudflareから直接、最新状況を取得できます。</div>
+        <div class="btn-row"><button class="btn-secondary" id="reloadAvailability">保存済みデータを再読込</button><button class="btn-secondary btn-small" id="selectAvailable">空き日をまとめて選択</button></div>
+        <details class="live-refresh-settings" id="liveRefreshSettings">
+          <summary>予備取得（GitHub Actions）</summary>
+          <div class="live-settings-body">
+            <label class="small" for="githubActionsToken">予備取得用GitHubトークン</label>
+            <input type="password" id="githubActionsToken" autocomplete="off" spellcheck="false" placeholder="github_pat_ から始まるトークン">
+            <label class="remember-token"><input type="checkbox" id="rememberGithubToken">この端末に保存する</label>
+            <div class="option-note">Cloudflare直接取得が失敗した場合だけ使います。</div>
+            <div class="live-settings-actions"><button class="btn-secondary btn-small" id="saveLiveRefreshSettings">設定を保存</button><button class="btn-text-danger" id="forgetLiveRefreshToken">設定を削除</button></div>
+            <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">予備取得用トークンを作成</a>
+          </div>
+        </details>
+        <p class="note">予約状況は4日分を取得します。操作中は3分ごとに更新し、3分間操作がなければ停止します。再操作すると、その時点で更新して再開します。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="card post-card">
+  <div class="card-title"><span class="step">4</span><span>投稿文</span></div>
+  <label class="quick-label">絵文字</label>
+  <div class="emoji-switch" id="emojiSwitch"><button class="emoji-btn active" data-emoji="none">なし</button><button class="emoji-btn" data-emoji="few">少なめ</button><button class="emoji-btn" data-emoji="many">多め</button></div>
+  <button class="btn-primary" id="generate">文章を作り直す</button>
+  <div class="preview" id="preview"></div>
+  <div class="meta"><span id="charCount">0文字</span><span id="generatedAt"></span></div>
+  <div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div>
+</section>
+<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.8.0</span></footer>
 </main>
 <div class="modal" id="modal"><section class="sheet"><div class="sheet-head"><h2>メニュー管理</h2><button class="close" id="closeModal">×</button></div><div class="tabs" id="tabs"></div><div class="helper">メニューをタップすると表示／非表示が切り替わります。長押しして移動すると並べ替え、左へスワイプすると削除ボタンが出ます。</div><div class="manage-controls"><div><label class="small">投稿画面に表示する数</label><input class="count" id="displayCount" type="number" min="1" max="30"></div></div><div class="add-row"><input id="newMenu" type="text" placeholder="新しいメニュー名"><button class="add-btn" id="addMenu">追加</button></div><div class="menu-list" id="menuList"></div></section></div>
-<script src="app-core.js?v=470"></script>
-<script src="app-weather.js?v=470"></script>
-<script src="app-reserve.js?v=470"></script>
-<script src="app-live.js?v=470"></script>
-<script src="app-ui.js?v=470"></script>
+<script src="app-core.js?v=480"></script>
+<script src="app-weather.js?v=480"></script>
+<script src="app-reserve.js?v=480"></script>
+<script src="app-live.js?v=480"></script>
+<script src="app-ui.js?v=480"></script>
+<script src="app-simple.js?v=480"></script>
 </body>
 </html>

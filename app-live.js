@@ -187,6 +187,14 @@ function setAutoRefreshState(text,type='waiting'){
   const panel=$('autoRefreshInfo');
   if(state)state.textContent=text;
   if(panel)panel.className=`auto-refresh-info ${type}`;
+
+  const compact=$('autoRefreshCompact');
+  if(compact){
+    const fetched=lastLiveFetchAt?`最終 ${formatClock(lastLiveFetchAt)}`:'まだ取得していません';
+    const duration=Number.isFinite(lastLiveFetchDurationMs)?`・${(lastLiveFetchDurationMs/1000).toFixed(1)}秒`:'';
+    compact.textContent=`${fetched}${duration}｜${text}`;
+    compact.className=`auto-refresh-compact ${type}`;
+  }
 }
 
 function renderAutoRefreshInfo(){
