@@ -1,7 +1,9 @@
 const PUBLICATION_WAITING_CODE='notOpen';
+const CREATION_PENDING_CODE='notCreated';
 
-function normalizePublicationWaitingAvailability(data){
+function normalizeReservationStatusAvailability(data){
   if(!data||!Array.isArray(data.days))return data;
+
   data.days.forEach(day=>{
     const slots=Array.isArray(day?.slots)?day.slots:[];
     let hasAvailable=false;
@@ -29,13 +31,11 @@ function normalizePublicationWaitingAvailability(data){
     });
 
     if(hasAvailable){
-      if(day.status?.code!=='available'){
-        day.status={
-          code:'available',
-          label:'空きあり',
-          reason:'選択可能な予約枠があります。'
-        };
-      }
+      day.status={
+        code:'available',
+        label:'空きあり',
+        reason:'選択可能な予約枠があります。'
+      };
     }else if(hasPublicationWaiting){
       day.status={
         code:PUBLICATION_WAITING_CODE,
@@ -52,67 +52,117 @@ function normalizePublicationWaitingAvailability(data){
     }else if(day.status?.code===PUBLICATION_WAITING_CODE){
       day.status.label='予約枠公開前';
       day.status.reason='予約枠は表示されていますが、まだ公開されていません。';
+    }else if(day.status?.code===CREATION_PENDING_CODE){
+      day.status.label='予約枠作成前';
+      day.status.reason='この週は予約時間枠がまだ作成されていません。';
     }
   });
+
+  // Compatibility with data obtained before Worker v1.3.0:
+  // a complete later seven-day page that is empty/notVisible is known to be
+  // the Air Reserve week whose time slots have not yet been created.
+  const sorted=[...data.days].sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  for(let index=0;index<sorted.length;index+=7){
+    const week=sorted.slice(index,index+7);
+    if(week.length<7)continue;
+
+    const allEmpty=week.every(day=>!Array.isArray(day?.slots)||day.slots.length===0);
+    const hasNotVisible=week.some(day=>day?.status?.code==='notVisible');
+    const compatibleCodes=week.every(day=>
+      ['notVisible','noSlots',CREATION_PENDING_CODE].includes(day?.status?.code)
+    );
+
+    if(allEmpty&&hasNotVisible&&compatibleCodes){
+      week.forEach(day=>{
+        day.status={
+          code:CREATION_PENDING_CODE,
+          label:'予約枠作成前',
+          reason:'この週は予約時間枠がまだ作成されていません。'
+        };
+        day.slots=[];
+        day.availableSlots=[];
+      });
+    }
+  }
+
   return data;
 }
 
-const originalApplyLiveAvailabilityPublicationFix=applyLiveAvailability;
+const originalApplyLiveAvailabilityStatusFix=applyLiveAvailability;
 applyLiveAvailability=function(data,source='direct'){
-  return originalApplyLiveAvailabilityPublicationFix(
-    normalizePublicationWaitingAvailability(data),
+  return originalApplyLiveAvailabilityStatusFix(
+    normalizeReservationStatusAvailability(data),
     source
   );
 };
 
-const originalLoadAvailabilityPublicationFix=loadAvailability;
+const originalLoadAvailabilityStatusFix=loadAvailability;
 loadAvailability=async function(resetSelection=false){
-  await originalLoadAvailabilityPublicationFix(resetSelection);
+  await originalLoadAvailabilityStatusFix(resetSelection);
   if(availability){
-    normalizePublicationWaitingAvailability(availability);
+    normalizeReservationStatusAvailability(availability);
     renderReservations(resetSelection);
   }
 };
 
-const originalReserveBandPublicationFix=reserveBand;
+const originalReserveBandStatusFix=reserveBand;
 reserveBand=function(day){
   if(day?.status?.code===PUBLICATION_WAITING_CODE){
     return {code:'not-open',label:'予約枠公開前'};
   }
-  return originalReserveBandPublicationFix(day);
+  if(day?.status?.code===CREATION_PENDING_CODE){
+    return {code:'not-created',label:'予約枠作成前'};
+  }
+  return originalReserveBandStatusFix(day);
 };
 
-function applyPublicationWaitingRows(){
+function applySpecialReservationRows(){
   const list=$('reserveList');
   if(!list)return;
+
   list.querySelectorAll('[data-reserve-date]').forEach(input=>{
     const day=findDay(input.dataset.reserveDate);
-    const waiting=day?.status?.code===PUBLICATION_WAITING_CODE;
+    const publicationWaiting=day?.status?.code===PUBLICATION_WAITING_CODE;
+    const creationPending=day?.status?.code===CREATION_PENDING_CODE;
     const row=input.closest('.reserve-day');
     if(!row)return;
-    row.classList.toggle('publication-waiting',waiting);
-    if(!waiting)return;
+
+    row.classList.toggle('publication-waiting',publicationWaiting);
+    row.classList.toggle('creation-pending',creationPending);
 
     const state=row.querySelector('.reserve-state');
     const detail=row.querySelector('.reserve-slots');
-    if(state){
-      state.textContent='予約枠公開前';
-      state.className='reserve-state not-open';
+
+    if(publicationWaiting){
+      if(state){
+        state.textContent='予約枠公開前';
+        state.className='reserve-state not-open';
+      }
+      if(detail)detail.textContent='予約枠はまだ公開されていません';
+      return;
     }
-    if(detail)detail.textContent='予約枠はまだ公開されていません';
+
+    if(creationPending){
+      if(state){
+        state.textContent='予約枠作成前';
+        state.className='reserve-state not-created';
+      }
+      if(detail)detail.textContent='予約時間枠はまだ作成されていません';
+    }
   });
 }
 
-const originalRenderReservationsPublicationFix=renderReservations;
+const originalRenderReservationsStatusFix=renderReservations;
 renderReservations=function(resetSelection=false){
-  originalRenderReservationsPublicationFix(resetSelection);
-  applyPublicationWaitingRows();
+  originalRenderReservationsStatusFix(resetSelection);
+  applySpecialReservationRows();
 };
 
-const originalRenderMenuDateStatusPublicationFix=renderMenuDateStatus;
+const originalRenderMenuDateStatusStatusFix=renderMenuDateStatus;
 renderMenuDateStatus=function(){
   const box=$('menuDateStatus');
   const ctx=getPostContext();
+
   if(
     box &&
     !availabilityLoading &&
@@ -123,5 +173,17 @@ renderMenuDateStatus=function(){
     box.innerHTML=`<div class="menu-date-status-top"><strong>${formatDate(ctx.selectedMenuDate,true)}の営業予定</strong><span class="menu-date-badge publication-waiting">予約枠公開前</span></div><span>営業予定ですが、Airリザーブの予約枠はまだ公開されていません。</span>`;
     return;
   }
-  originalRenderMenuDateStatusPublicationFix();
+
+  if(
+    box &&
+    !availabilityLoading &&
+    availability?.ok &&
+    ctx.selectedMenuDay?.status?.code===CREATION_PENDING_CODE
+  ){
+    box.className='menu-date-status creation-pending';
+    box.innerHTML=`<div class="menu-date-status-top"><strong>${formatDate(ctx.selectedMenuDate,true)}の予約状況</strong><span class="menu-date-badge creation-pending">予約枠作成前</span></div><span>Airリザーブの予約時間枠はまだ作成されていません。</span>`;
+    return;
+  }
+
+  originalRenderMenuDateStatusStatusFix();
 };

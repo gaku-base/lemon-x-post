@@ -31,3 +31,35 @@
   border:1px solid #dfbf43;
   color:#765a00;
 }
+
+.reserve-day.creation-pending,
+.reserve-day.creation-pending.disabled{
+  background:#ece9e5;
+  border-color:#cfc9c2;
+  color:#6f6964;
+  filter:none;
+  opacity:1;
+}
+.reserve-day.creation-pending .reserve-date,
+.reserve-day.creation-pending .reserve-slots{
+  color:#77716c;
+}
+.reserve-state.not-created{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#d9d5d0;
+  color:#5f5a55;
+  border:1px solid #beb8b2;
+}
+.menu-date-status.creation-pending{
+  background:#efedea;
+  border-color:#d1ccc6;
+  color:#68625d;
+}
+.menu-date-badge.creation-pending{
+  background:#d9d5d0;
+  border:1px solid #beb8b2;
+  color:#5f5a55;
+}

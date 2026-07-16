@@ -7,7 +7,7 @@ const DIRECT_REFRESH_CONFIG={
 const AUTO_REFRESH_CONFIG={
   intervalMs:3*60*1000,
   idleMs:3*60*1000,
-  minimumWorkerVersion:'1.2.0',
+  minimumWorkerVersion:'1.3.0',
   healthTimeoutMs:8*1000
 };
 

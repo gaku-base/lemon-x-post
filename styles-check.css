@@ -31,3 +31,23 @@
   border-color:#d6b93f;
   border-style:solid;
 }
+
+.availability-check-day-head.notCreated{
+  background:#dcd9d5;
+}
+.availability-check-day-head.notCreated strong,
+.availability-check-day-head.notCreated span{
+  color:#5d5853;
+}
+.availability-check-day-column.notCreated{
+  background:repeating-linear-gradient(
+    to bottom,
+    #e9e7e4 0,
+    #e9e7e4 calc(var(--hour-height) - 1px),
+    #cdc9c4 var(--hour-height)
+  );
+}
+.check-color.not-created{
+  background:#d9d5d0;
+  border-color:#beb8b2;
+}

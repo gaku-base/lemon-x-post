@@ -173,7 +173,9 @@ function renderAvailabilityCheckGrid(days){
     if(!slots.length){
       const empty=document.createElement('div');
       empty.className='availability-check-no-slots';
-      empty.textContent=day.status?.code==='noSlots'?'予約枠なし':'取得枠なし';
+      if(day.status?.code==='notCreated')empty.textContent='予約枠作成前';
+      else if(day.status?.code==='noSlots')empty.textContent='予約枠なし';
+      else empty.textContent='取得枠なし';
       column.appendChild(empty);
     }else{
       slots.forEach(slot=>{
@@ -197,7 +199,11 @@ function availabilityCheckSummaryText(){
     lines.push(`${checkDateLabel(day.date)}　${day.status?.label||'判定なし'}`);
     const slots=sortedCheckSlots(day);
     if(!slots.length){
-      lines.push('  予約枠なし');
+      lines.push(
+        day.status?.code==='notCreated'
+          ?'  予約時間枠はまだ作成されていません'
+          :'  予約枠なし'
+      );
     }else{
       slots.forEach(slot=>{
         const state=checkSlotState(slot);
