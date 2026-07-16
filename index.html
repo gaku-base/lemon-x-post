@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff7df">
 <title>レモンの木 投稿づくり</title>
-<link rel="stylesheet" href="styles-base.css?v=480">
-<link rel="stylesheet" href="styles-manage.css?v=480">
-<link rel="stylesheet" href="styles-live.css?v=480">
-<link rel="stylesheet" href="styles-simple.css?v=480">
+<link rel="stylesheet" href="styles-base.css?v=491">
+<link rel="stylesheet" href="styles-manage.css?v=491">
+<link rel="stylesheet" href="styles-live.css?v=491">
+<link rel="stylesheet" href="styles-simple.css?v=491">
+<link rel="stylesheet" href="styles-check.css?v=491">
+<link rel="stylesheet" href="styles-status-fix.css?v=491">
 </head>
 <body class="simple-mode">
 <main class="app">
 <section class="hero compact-hero">
-  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.8.0</span></div>
+  <div class="hero-top"><div class="eyebrow">和洋喫茶 レモンの木</div><span class="version-badge" id="appVersion">v4.9.1</span></div>
   <h1>投稿づくり</h1>
   <p>日付とメニューを選ぶだけで、予約状況を反映した投稿文を作成します。</p>
 </section>
@@ -110,7 +112,14 @@
             <a class="token-help-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">予備取得用トークンを作成</a>
           </div>
         </details>
-        <p class="note">予約状況は4日分を取得します。操作中は3分ごとに更新し、3分間操作がなければ停止します。再操作すると、その時点で更新して再開します。</p>
+        <div class="check-only-panel">
+          <div>
+            <strong>取得チェック（チャピ確認用）</strong>
+            <span>取得した予約枠をAirリザーブ風の週間表で確認します。投稿文や通常の予約表には表示されません。</span>
+          </div>
+          <button type="button" class="btn-secondary" id="openAvailabilityCheck">取得チェック画面を開く</button>
+        </div>
+        <p class="note">裏側では最大14日分を取得し、3日後が定休日でも次回営業日とその先の予約状況を判定します。通常画面には投稿に必要な4日分だけを表示します。操作中は3分ごとに更新し、3分間操作がなければ停止します。</p>
       </div>
     </details>
   </div>
@@ -125,14 +134,44 @@
   <div class="meta"><span id="charCount">0文字</span><span id="generatedAt"></span></div>
   <div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div>
 </section>
-<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.8.0</span></footer>
+<footer class="app-footer">レモンの木 投稿づくり <span id="appVersionFooter">v4.9.1</span></footer>
 </main>
 <div class="modal" id="modal"><section class="sheet"><div class="sheet-head"><h2>メニュー管理</h2><button class="close" id="closeModal">×</button></div><div class="tabs" id="tabs"></div><div class="helper">メニューをタップすると表示／非表示が切り替わります。長押しして移動すると並べ替え、左へスワイプすると削除ボタンが出ます。</div><div class="manage-controls"><div><label class="small">投稿画面に表示する数</label><input class="count" id="displayCount" type="number" min="1" max="30"></div></div><div class="add-row"><input id="newMenu" type="text" placeholder="新しいメニュー名"><button class="add-btn" id="addMenu">追加</button></div><div class="menu-list" id="menuList"></div></section></div>
-<script src="app-core.js?v=480"></script>
-<script src="app-weather.js?v=480"></script>
-<script src="app-reserve.js?v=480"></script>
-<script src="app-live.js?v=480"></script>
-<script src="app-ui.js?v=480"></script>
-<script src="app-simple.js?v=480"></script>
+
+<div class="availability-check-modal" id="availabilityCheckModal" hidden>
+  <div class="availability-check-dialog" role="dialog" aria-modal="true" aria-labelledby="availabilityCheckTitle">
+    <div class="availability-check-head">
+      <div>
+        <span class="check-kicker">取得チェック専用</span>
+        <h2 id="availabilityCheckTitle">Airリザーブ再現表示</h2>
+        <p>Cloudflareが取得した全予約枠を、そのまま確認するための画面です。</p>
+      </div>
+      <button type="button" class="availability-check-close" id="closeAvailabilityCheck" aria-label="閉じる">×</button>
+    </div>
+    <div class="availability-check-meta" id="availabilityCheckMeta"></div>
+    <div class="availability-check-tabs" id="availabilityCheckTabs" role="tablist"></div>
+    <div class="availability-check-scroll">
+      <div class="availability-check-grid" id="availabilityCheckGrid"></div>
+    </div>
+    <div class="availability-check-legend">
+      <span><i class="check-color available"></i>予約可能</span>
+      <span><i class="check-color full"></i>満席</span>
+      <span><i class="check-color waiting"></i>予約枠公開前</span>
+      <span><i class="check-color none"></i>予約枠なし</span>
+    </div>
+    <div class="availability-check-actions">
+      <button type="button" class="btn-secondary" id="copyAvailabilityCheck">確認内容をコピー</button>
+      <button type="button" class="btn-live-refresh" id="refreshAvailabilityCheck">再取得して確認</button>
+    </div>
+  </div>
+</div>
+<script src="app-core.js?v=491"></script>
+<script src="app-weather.js?v=491"></script>
+<script src="app-reserve.js?v=491"></script>
+<script src="app-live.js?v=491"></script>
+<script src="app-status-fix.js?v=491"></script>
+<script src="app-ui.js?v=491"></script>
+<script src="app-simple.js?v=491"></script>
+<script src="app-check.js?v=491"></script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+.reserve-day.publication-waiting,
+.reserve-day.publication-waiting.disabled{
+  background:#fff7d6;
+  border-color:#e1c34e;
+  color:#65521b;
+  filter:none;
+  opacity:1;
+}
+.reserve-day.publication-waiting .reserve-date{
+  color:#65521b;
+}
+.reserve-day.publication-waiting .reserve-slots{
+  color:#796522;
+}
+.reserve-state.not-open{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#ffe58a;
+  color:#765a00;
+  border:1px solid #dfbf43;
+}
+.menu-date-status.publication-waiting{
+  background:#fff7d6;
+  border-color:#e1c34e;
+  color:#65521b;
+}
+.menu-date-badge.publication-waiting{
+  background:#ffe58a;
+  border:1px solid #dfbf43;
+  color:#765a00;
+}

@@ -1,4 +1,4 @@
-const APP_VERSION='4.8.0';
+const APP_VERSION='4.9.1';
 const APP_BUILD_DATE='2026-07-16';
 const defaults={bread:{label:'パン・軽食',displayCount:6,items:[['サンド各種',1],['小倉トースト',1],['ハムチーズトースト',1]]},dessert:{label:'デザート',displayCount:6,items:[['プリンアラモード',1],['ベイクドチーズ',1],['ロールケーキ',1]]},ice:{label:'かき氷',displayCount:10,items:[['黒蜜きな粉',1],['ジンジャーココア',1],['クリームソーダ',1],['グリーンラッチー',1],['ピーチカスタード',1],['カフェオレ大福',1],['梅とうぐいす',1]]},other:{label:'その他',displayCount:6,items:[]}};
 let store=load();let activeCat='bread';let variant=0;let inputTimer;let emojiMode='none';let availability=null;let selectedReserveDates=new Set();let availabilityLoading=false;let weatherForecast=null;let weatherLoading=false;

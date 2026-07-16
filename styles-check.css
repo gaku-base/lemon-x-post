@@ -1,0 +1,33 @@
+.check-only-panel{display:grid;gap:9px;padding:12px;border:1px solid #d8e2d4;border-radius:14px;background:#f8fbf6}.check-only-panel>div{display:grid;gap:3px}.check-only-panel strong{font-size:13px;color:#506c49}.check-only-panel span{font-size:11px;line-height:1.55;color:#81756d}
+.availability-check-modal[hidden]{display:none}.availability-check-modal{position:fixed;inset:0;z-index:9999;background:rgba(36,31,27,.66);padding:16px;display:grid;place-items:center}.availability-check-open{overflow:hidden}.availability-check-dialog{width:min(1180px,100%);max-height:calc(100vh - 32px);overflow:hidden;display:grid;grid-template-rows:auto auto auto minmax(260px,1fr) auto auto;background:#fff;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.28)}.availability-check-head{display:flex;justify-content:space-between;gap:18px;padding:18px 20px 13px;border-bottom:1px solid #e6e1dc}.availability-check-head h2{margin:2px 0 4px;font-size:21px}.availability-check-head p{margin:0;font-size:12px;color:#7a6d65}.check-kicker{font-size:11px;font-weight:900;color:#587052;letter-spacing:.06em}.availability-check-close{flex:0 0 auto;width:42px;height:42px;padding:0;border-radius:50%;font-size:26px;line-height:1;background:#f2eee9;color:#62554c}.availability-check-meta{margin:12px 20px 0;padding:9px 11px;border-radius:10px;background:#edf4e9;color:#506c49;font-size:12px;font-weight:800}.availability-check-meta.error{background:#fff0ef;color:#d95d57}.availability-check-tabs{display:flex;gap:8px;padding:11px 20px 8px;overflow-x:auto}.availability-check-tab{white-space:nowrap;padding:9px 13px;border:1px solid #ded6cc;background:#f5f1eb;color:#6d5f56}.availability-check-tab.active{background:#222;color:#fff;border-color:#222}.availability-check-scroll{overflow:auto;border-top:1px solid #e5e0da;border-bottom:1px solid #e5e0da;background:#f8f8f8}.availability-check-grid{min-height:320px}.availability-check-empty{padding:36px;text-align:center;color:#8c8077}.availability-check-week-header{display:grid;position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #9d9d9d}.availability-check-corner,.availability-check-day-head{min-height:58px;display:grid;place-content:center;text-align:center;border-right:1px solid #bbb;padding:5px}.availability-check-corner{font-size:11px;color:#777;background:#f3f3f3}.availability-check-day-head strong{font-size:12px;color:#333}.availability-check-day-head span{font-size:10px;color:#777;margin-top:2px}.availability-check-day-head.noSlots{background:#eee}.availability-check-day-head.available{background:#fff}.availability-check-day-head.full{background:#f6efed}.availability-check-week-body{display:grid;position:relative}.availability-check-time-axis{position:relative;background:#fff;border-right:1px solid #aaa}.availability-check-time-axis span{position:absolute;right:9px;transform:translateY(-50%);font-size:11px;color:#606060}.availability-check-day-column{position:relative;border-right:1px solid #b9b9b9;background:repeating-linear-gradient(to bottom,#f5f5f5 0,#f5f5f5 calc(var(--hour-height) - 1px),#d5d5d5 var(--hour-height))}.availability-check-day-column.available{background:repeating-linear-gradient(to bottom,#f5f5f5 0,#f5f5f5 calc(var(--hour-height) - 1px),#d5d5d5 var(--hour-height))}.availability-check-day-column.noSlots{background:repeating-linear-gradient(to bottom,#ececec 0,#ececec calc(var(--hour-height) - 1px),#d0d0d0 var(--hour-height))}.availability-check-no-slots{position:absolute;top:16px;left:8px;right:8px;text-align:center;padding:8px 4px;font-size:10px;color:#999}.availability-check-slot{position:absolute;z-index:2;overflow:hidden;border:1px solid rgba(80,110,120,.22);padding:4px 4px 3px;font-size:10px;line-height:1.2;color:#3f4b50;box-shadow:0 1px 2px rgba(0,0,0,.08)}.availability-check-slot.available{background:#d9f2fb}.availability-check-slot.full{background:#d8d8d8;color:#555}.availability-check-slot.waiting{background:#e6e6e6;color:#6b6b6b;border-style:dashed}.check-slot-line{display:flex;gap:3px;align-items:center}.check-slot-line strong{font-size:10px}.check-slot-badge{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 2px;border-radius:3px;background:#8d98a0;color:#fff;font-size:10px;font-weight:900}.check-slot-badge.full{background:#ff6f5e}.check-slot-badge.available{background:#8c969e}.check-slot-badge.waiting{background:#9ca1a4}.availability-check-slot>span,.availability-check-slot>em{display:block;margin-top:2px;font-style:normal}.availability-check-slot>em{font-weight:900}.availability-check-slot.full>em{color:#ff3f2f}.availability-check-legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 20px;font-size:11px;color:#6f655d}.availability-check-legend span{display:inline-flex;align-items:center;gap:5px}.check-color{width:14px;height:14px;border:1px solid #bbb;border-radius:3px}.check-color.available{background:#d9f2fb}.check-color.full{background:#d8d8d8}.check-color.waiting{background:#e6e6e6;border-style:dashed}.check-color.none{background:#ececec}.availability-check-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 20px 18px}.availability-check-actions button{width:100%}
+@media(max-width:640px){.availability-check-modal{padding:0}.availability-check-dialog{max-height:100vh;height:100vh;border-radius:0}.availability-check-head{padding:14px}.availability-check-meta{margin:10px 14px 0}.availability-check-tabs{padding-left:14px;padding-right:14px}.availability-check-legend{padding-left:14px;padding-right:14px}.availability-check-actions{padding:0 14px 14px;grid-template-columns:1fr}.availability-check-close{width:38px;height:38px}.availability-check-head h2{font-size:18px}}
+
+.availability-check-day-head.notOpen{
+  background:#fff3bd;
+}
+.availability-check-day-head.notOpen strong,
+.availability-check-day-head.notOpen span{
+  color:#6f5700;
+}
+.availability-check-day-column.notOpen{
+  background:repeating-linear-gradient(
+    to bottom,
+    #fff9df 0,
+    #fff9df calc(var(--hour-height) - 1px),
+    #e4d69d var(--hour-height)
+  );
+}
+.availability-check-slot.waiting{
+  background:#ffe58a;
+  color:#695200;
+  border-color:#d6b93f;
+  border-style:solid;
+}
+.check-slot-badge.waiting{
+  background:#c79b00;
+}
+.check-color.waiting{
+  background:#ffe58a;
+  border-color:#d6b93f;
+  border-style:solid;
+}

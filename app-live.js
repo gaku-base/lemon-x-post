@@ -1,13 +1,13 @@
 const DIRECT_REFRESH_CONFIG={
   workerUrl:'https://divine-smoke-b143.mail-skgc.workers.dev',
-  timeoutMs:20*1000,
-  offsets:'0,1,2,3'
+  timeoutMs:40*1000,
+  offsets:'0,1,2,3,4,5,6,7,8,9,10,11,12,13'
 };
 
 const AUTO_REFRESH_CONFIG={
   intervalMs:3*60*1000,
   idleMs:3*60*1000,
-  minimumWorkerVersion:'1.1.0',
+  minimumWorkerVersion:'1.2.0',
   healthTimeoutMs:8*1000
 };
 
@@ -154,7 +154,9 @@ async function githubPublicApi(path){
 }
 
 function directBaseDate(){
-  return $('menuDate')?.value||$('postDate')?.value||localIso();
+  const postDate=$('postDate')?.value||localIso();
+  const menuDate=$('menuDate')?.value||postDate;
+  return String(postDate)<=String(menuDate)?postDate:menuDate;
 }
 
 function formatLiveDateTime(value){
@@ -377,8 +379,8 @@ async function initAutoLiveRefresh(){
   }
   if(compareVersion(health.version,AUTO_REFRESH_CONFIG.minimumWorkerVersion)<0){
     autoRefreshSupported=false;
-    autoRefreshPauseReason='Worker v1.1.0更新待ち';
-    liveStatus('無料枠保護版Workerへ更新後、自動更新が有効になります。手動更新は利用できます。','warning');
+    autoRefreshPauseReason='Worker v1.2.0更新待ち';
+    liveStatus('2週間取得対応Workerへ更新後、自動更新が有効になります。手動更新は利用できます。','warning');
     renderAutoRefreshInfo();
     return;
   }
@@ -418,7 +420,7 @@ async function fetchAvailabilityFromWorker(){
     return data;
   }catch(error){
     if(error?.name==='AbortError'){
-      const timeoutError=new Error('直接取得が20秒以内に完了しませんでした。');
+      const timeoutError=new Error('直接取得が40秒以内に完了しませんでした。');
       timeoutError.source='worker';
       throw timeoutError;
     }
@@ -438,7 +440,7 @@ async function triggerLiveWorkflow(token){
       ref:cfg.ref,
       inputs:{
         start_date:directBaseDate(),
-        days:'4'
+        days:'14'
       }
     }
   });
