@@ -100,3 +100,23 @@
   .brand-english{font-size:15px;letter-spacing:.025em}
   .brand-series{font-size:7px}
 }
+
+
+/* v4.10.3 header logo replacement */
+.compact-hero{border:1px solid rgba(115,87,48,.12);border-radius:20px;background:linear-gradient(105deg,#fbf4e9 0%,#fff9ec 56%,#f7e3ac 100%);box-shadow:0 7px 18px rgba(96,78,67,.07)}
+.compact-hero::after{display:none}
+.hero-brand{position:relative;display:block;min-height:auto}
+.hero-logo-shell{position:relative;padding:12px 14px 11px;min-height:114px}
+.hero-logo-img{display:block;width:100%;height:auto;max-height:110px;object-fit:contain;object-position:left center}
+.hero-version-chip{position:absolute;top:11px;right:12px;padding:3px 6px;border:1px solid rgba(91,76,58,.08);border-radius:999px;background:rgba(255,255,255,.72);font-size:8px;color:#786b60}
+
+@media(max-width:520px){
+  .hero-logo-shell{padding:10px 10px 9px;min-height:90px}
+  .hero-logo-img{max-height:86px}
+  .hero-version-chip{top:10px;right:9px;padding:2px 5px;font-size:7px}
+}
+
+@media(max-width:370px){
+  .hero-logo-shell{padding:8px 8px 7px;min-height:82px}
+  .hero-logo-img{max-height:78px}
+}

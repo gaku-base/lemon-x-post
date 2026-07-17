@@ -1,0 +1,10 @@
+{
+  "appName": "ポストコンシェルジュ",
+  "shortName": "Post Concierge",
+  "headerLogo": "./assets/branding/app-logo.png",
+  "appIcon180": "./assets/branding/app-icon-180.png",
+  "appIcon192": "./assets/branding/app-icon-192.png",
+  "appIcon512": "./assets/branding/app-icon-512.png",
+  "themeColor": "#fff7df",
+  "assetVersion": "20260717-1"
+}
