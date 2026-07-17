@@ -66,3 +66,37 @@
   .brand-lockup h1{font-size:24px}
   .brand-series{font-size:8px}
 }
+
+/* v4.10.2 final slim POST CONCIERGE header */
+.compact-hero{border:1px solid rgba(115,87,48,.12);border-radius:20px;background:linear-gradient(105deg,#fbf4e9 0%,#fff9ec 56%,#f7e3ac 100%);box-shadow:0 7px 18px rgba(96,78,67,.07)}
+.compact-hero::after{display:none}
+.hero-brand{grid-template-columns:112px minmax(0,1fr);min-height:126px}
+.sandokun-mascot{min-height:126px;background:#f8efe4;border-right-color:rgba(115,87,48,.1)}
+.sandokun-mascot::after{background:linear-gradient(90deg,transparent 76%,rgba(248,239,228,.68) 92%,rgba(248,239,228,.95))}
+.sandokun-mascot img{object-fit:contain;object-position:center;transform:scale(1.03)}
+.hero-copy{position:relative;padding:18px 46px 15px 16px}
+.hero-copy .hero-top{position:absolute;top:9px;right:10px;margin:0}
+.compact-hero .eyebrow,.compact-hero .hero-copy p,.brand-lockup h1{display:none}
+.brand-lockup{padding:0}
+.brand-series{margin-bottom:6px;color:#3f5d43;font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em}
+.brand-series span{font-family:"Avenir Next",Avenir,"Helvetica Neue",Arial,sans-serif;font-size:.92em;font-style:normal;font-weight:700;letter-spacing:.04em}
+.brand-english{display:block;color:#5a4639;font-family:"Avenir Next",Avenir,"Helvetica Neue",Arial,sans-serif;font-size:24px;font-weight:750;line-height:1.02;letter-spacing:.045em;white-space:nowrap}
+.brand-english::after{display:none}
+.compact-hero .version-badge{padding:3px 6px;border:1px solid rgba(91,76,58,.08);background:rgba(255,255,255,.72);font-size:8px;color:#786b60}
+
+@media(max-width:520px){
+  .hero-brand{grid-template-columns:88px minmax(0,1fr);min-height:104px}
+  .sandokun-mascot{min-height:104px}
+  .hero-copy{padding:14px 34px 12px 11px}
+  .brand-series{margin-bottom:5px;font-size:8px;letter-spacing:.07em}
+  .brand-english{font-size:17px;letter-spacing:.035em}
+  .compact-hero .version-badge{top:-1px;padding:2px 4px;font-size:7px}
+}
+
+@media(max-width:370px){
+  .hero-brand{grid-template-columns:78px minmax(0,1fr);min-height:96px}
+  .sandokun-mascot{min-height:96px}
+  .hero-copy{padding-left:8px;padding-right:29px}
+  .brand-english{font-size:15px;letter-spacing:.025em}
+  .brand-series{font-size:7px}
+}

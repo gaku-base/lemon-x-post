@@ -1,0 +1,183 @@
+--- a/app-simple.js
++++ b/app-simple.js
+@@ -1,4 +1,6 @@
+ const SIMPLE_UI_STORAGE_KEY='lemonUiMode';
++const POST_CONCIERGE_UI_VERSION='4.10.2';
++const POST_CONCIERGE_BUILD_DATE='2026-07-17';
+ 
+ function setUiMode(mode,{save=true}={}){
+   const detail=mode==='detail';
+@@ -18,13 +20,131 @@
+   if(save)localStorage.setItem(SIMPLE_UI_STORAGE_KEY,detail?'detail':'simple');
+ }
+ 
++function upsertIdentityMeta(name,content){
++  let meta=document.head.querySelector(`meta[name="${name}"]`);
++  if(!meta){
++    meta=document.createElement('meta');
++    meta.name=name;
++    document.head.appendChild(meta);
++  }
++  meta.content=content;
++}
++
++function upsertIdentityLink(rel,href,sizes=''){
++  let link=document.head.querySelector(`link[rel="${rel}"]${sizes?`[sizes="${sizes}"]`:''}`);
++  if(!link){
++    link=document.createElement('link');
++    link.rel=rel;
++    if(sizes)link.sizes=sizes;
++    document.head.appendChild(link);
++  }
++  link.href=href;
++  return link;
++}
++
++function createSandokunIconDataUrl(image,size){
++  const canvas=document.createElement('canvas');
++  canvas.width=size;
++  canvas.height=size;
++  const context=canvas.getContext('2d');
++  if(!context)throw new Error('Canvas is not available.');
++
++  const radius=size*.19;
++  context.beginPath();
++  context.moveTo(radius,0);
++  context.arcTo(size,0,size,size,radius);
++  context.arcTo(size,size,0,size,radius);
++  context.arcTo(0,size,0,0,radius);
++  context.arcTo(0,0,size,0,radius);
++  context.closePath();
++  context.clip();
++
++  const gradient=context.createLinearGradient(0,0,size,size);
++  gradient.addColorStop(0,'#fffaf0');
++  gradient.addColorStop(.62,'#f8ead7');
++  gradient.addColorStop(1,'#efd690');
++  context.fillStyle=gradient;
++  context.fillRect(0,0,size,size);
++
++  const naturalWidth=image.naturalWidth||image.width;
++  const naturalHeight=image.naturalHeight||image.height;
++  const scale=Math.min((size*.9)/naturalWidth,(size*1.02)/naturalHeight);
++  const width=naturalWidth*scale;
++  const height=naturalHeight*scale;
++  const x=(size-width)/2;
++  const y=(size-height)/2+size*.015;
++  context.drawImage(image,x,y,width,height);
++
++  context.strokeStyle='rgba(93,70,45,.18)';
++  context.lineWidth=Math.max(2,size*.012);
++  context.strokeRect(context.lineWidth/2,context.lineWidth/2,size-context.lineWidth,size-context.lineWidth);
++
++  return canvas.toDataURL('image/png');
++}
++
++async function installPostConciergeIdentity(){
++  document.title='ポストコンシェルジュ';
++  upsertIdentityMeta('application-name','ポストコンシェルジュ');
++  upsertIdentityMeta('apple-mobile-web-app-title','ポストコンシェルジュ');
++  upsertIdentityMeta('apple-mobile-web-app-capable','yes');
++  upsertIdentityMeta('mobile-web-app-capable','yes');
++  upsertIdentityMeta('apple-mobile-web-app-status-bar-style','default');
++  upsertIdentityMeta('theme-color','#fff7df');
++
++  const versionText=`v${POST_CONCIERGE_UI_VERSION}`;
++  if($('appVersion'))$('appVersion').textContent=versionText;
++  if($('appVersionFooter'))$('appVersionFooter').textContent=`${versionText}（${POST_CONCIERGE_BUILD_DATE}）`;
++
++  const mascot=document.querySelector('.sandokun-mascot img');
++  if(!mascot)return;
++
++  try{
++    if(typeof mascot.decode==='function')await mascot.decode();
++    else if(!mascot.complete)await new Promise((resolve,reject)=>{
++      mascot.addEventListener('load',resolve,{once:true});
++      mascot.addEventListener('error',reject,{once:true});
++    });
++
++    const icon180=createSandokunIconDataUrl(mascot,180);
++    const icon192=createSandokunIconDataUrl(mascot,192);
++    const icon512=createSandokunIconDataUrl(mascot,512);
++
++    upsertIdentityLink('apple-touch-icon',icon180,'180x180');
++    upsertIdentityLink('icon',icon192,'192x192');
++    upsertIdentityLink('shortcut icon',icon192);
++
++    const manifest={
++      name:'ポストコンシェルジュ',
++      short_name:'ポストコンシェルジュ',
++      description:'和洋喫茶 レモンの木の投稿文作成アプリ',
++      lang:'ja',
++      start_url:'./?source=home-screen',
++      scope:'./',
++      display:'standalone',
++      orientation:'portrait',
++      background_color:'#fff7df',
++      theme_color:'#fff7df',
++      icons:[
++        {src:icon192,sizes:'192x192',type:'image/png',purpose:'any maskable'},
++        {src:icon512,sizes:'512x512',type:'image/png',purpose:'any maskable'}
++      ]
++    };
++    const manifestUrl=URL.createObjectURL(
++      new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'})
++    );
++    upsertIdentityLink('manifest',manifestUrl);
++  }catch(error){
++    console.warn('サンドくんのホーム画面アイコンを生成できませんでした。',error);
++  }
++}
++
+ function initSimpleUi(){
+   const saved=localStorage.getItem(SIMPLE_UI_STORAGE_KEY);
+   setUiMode(saved==='detail'?'detail':'simple',{save:false});
+   $('simpleModeButton')?.addEventListener('click',()=>setUiMode('simple'));
+   $('detailModeButton')?.addEventListener('click',()=>setUiMode('detail'));
+   $('openMenuManager')?.addEventListener('click',()=>openManage('bread'));
+-
++  installPostConciergeIdentity();
+ }
+ 
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initSimpleUi,{once:true});
+
+--- a/styles-simple.css
++++ b/styles-simple.css
+@@ -66,3 +66,37 @@
+   .brand-lockup h1{font-size:24px}
+   .brand-series{font-size:8px}
+ }
++
++/* v4.10.2 final slim POST CONCIERGE header */
++.compact-hero{border:1px solid rgba(115,87,48,.12);border-radius:20px;background:linear-gradient(105deg,#fbf4e9 0%,#fff9ec 56%,#f7e3ac 100%);box-shadow:0 7px 18px rgba(96,78,67,.07)}
++.compact-hero::after{display:none}
++.hero-brand{grid-template-columns:112px minmax(0,1fr);min-height:126px}
++.sandokun-mascot{min-height:126px;background:#f8efe4;border-right-color:rgba(115,87,48,.1)}
++.sandokun-mascot::after{background:linear-gradient(90deg,transparent 76%,rgba(248,239,228,.68) 92%,rgba(248,239,228,.95))}
++.sandokun-mascot img{object-fit:contain;object-position:center;transform:scale(1.03)}
++.hero-copy{position:relative;padding:18px 46px 15px 16px}
++.hero-copy .hero-top{position:absolute;top:9px;right:10px;margin:0}
++.compact-hero .eyebrow,.compact-hero .hero-copy p,.brand-lockup h1{display:none}
++.brand-lockup{padding:0}
++.brand-series{margin-bottom:6px;color:#3f5d43;font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em}
++.brand-series span{font-family:"Avenir Next",Avenir,"Helvetica Neue",Arial,sans-serif;font-size:.92em;font-style:normal;font-weight:700;letter-spacing:.04em}
++.brand-english{display:block;color:#5a4639;font-family:"Avenir Next",Avenir,"Helvetica Neue",Arial,sans-serif;font-size:24px;font-weight:750;line-height:1.02;letter-spacing:.045em;white-space:nowrap}
++.brand-english::after{display:none}
++.compact-hero .version-badge{padding:3px 6px;border:1px solid rgba(91,76,58,.08);background:rgba(255,255,255,.72);font-size:8px;color:#786b60}
++
++@media(max-width:520px){
++  .hero-brand{grid-template-columns:88px minmax(0,1fr);min-height:104px}
++  .sandokun-mascot{min-height:104px}
++  .hero-copy{padding:14px 34px 12px 11px}
++  .brand-series{margin-bottom:5px;font-size:8px;letter-spacing:.07em}
++  .brand-english{font-size:17px;letter-spacing:.035em}
++  .compact-hero .version-badge{top:-1px;padding:2px 4px;font-size:7px}
++}
++
++@media(max-width:370px){
++  .hero-brand{grid-template-columns:78px minmax(0,1fr);min-height:96px}
++  .sandokun-mascot{min-height:96px}
++  .hero-copy{padding-left:8px;padding-right:29px}
++  .brand-english{font-size:15px;letter-spacing:.025em}
++  .brand-series{font-size:7px}
++}
