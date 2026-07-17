@@ -51,3 +51,33 @@
   background:#d9d5d0;
   border-color:#beb8b2;
 }
+
+
+.availability-check-day-head.businessEnded{
+  background:#dcd9d5;
+}
+.availability-check-day-head.businessEnded strong,
+.availability-check-day-head.businessEnded span{
+  color:#5d5853;
+}
+.availability-check-day-column.businessEnded{
+  background:repeating-linear-gradient(
+    to bottom,
+    #e9e7e4 0,
+    #e9e7e4 calc(var(--hour-height) - 1px),
+    #cdc9c4 var(--hour-height)
+  );
+}
+.availability-check-slot.ended{
+  background:#d8d5d1;
+  color:#5f5a55;
+  border-color:#bbb5ae;
+  border-style:solid;
+}
+.check-slot-badge.ended{
+  background:#77716b;
+}
+.check-color.ended{
+  background:#d8d5d1;
+  border-color:#bbb5ae;
+}

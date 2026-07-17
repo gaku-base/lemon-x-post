@@ -1,6 +1,72 @@
 const PUBLICATION_WAITING_CODE='notOpen';
 const CREATION_PENDING_CODE='notCreated';
 
+const BUSINESS_ENDED_CODE='businessEnded';
+const BUSINESS_END_ADVANCE_MINUTES=180;
+const RESERVATION_TIME_ZONE='Asia/Tokyo';
+
+function reservationTokyoDateTime(value){
+  const date=value instanceof Date?value:new Date(value||Date.now());
+  if(Number.isNaN(date.getTime()))return null;
+
+  const values={};
+  new Intl.DateTimeFormat('en-CA',{
+    timeZone:RESERVATION_TIME_ZONE,
+    year:'numeric',
+    month:'2-digit',
+    day:'2-digit',
+    hour:'2-digit',
+    minute:'2-digit',
+    hourCycle:'h23'
+  }).formatToParts(date).forEach(part=>{
+    if(part.type!=='literal')values[part.type]=part.value;
+  });
+
+  if(!values.year||!values.month||!values.day)return null;
+  return {
+    date:`${values.year}-${values.month}-${values.day}`,
+    minutes:Number(values.hour||0)*60+Number(values.minute||0)
+  };
+}
+
+function reservationClockMinutes(value){
+  const match=String(value||'').match(/^(\d{1,2}):(\d{2})$/);
+  if(!match)return null;
+  return Number(match[1])*60+Number(match[2]);
+}
+
+function reservationLatestBusinessEnd(day){
+  const values=(Array.isArray(day?.slots)?day.slots:[])
+    .map(slot=>{
+      const explicitEnd=reservationClockMinutes(slot?.end);
+      if(explicitEnd!==null)return explicitEnd;
+      const start=reservationClockMinutes(slot?.start);
+      const duration=Number(slot?.durationMinutes);
+      return start!==null&&Number.isFinite(duration)?start+duration:null;
+    })
+    .filter(Number.isFinite);
+
+  return values.length?Math.max(...values):null;
+}
+
+function reservationShouldShowBusinessEnded(day,data){
+  if(day?.status?.code!==PUBLICATION_WAITING_CODE)return false;
+
+  const fetched=reservationTokyoDateTime(data?.fetchedAt);
+  if(!fetched||fetched.date!==day?.date)return false;
+
+  const businessEnd=reservationLatestBusinessEnd(day);
+  if(businessEnd===null)return false;
+
+  return fetched.minutes>=Math.max(0,businessEnd-BUSINESS_END_ADVANCE_MINUTES);
+}
+
+function reservationBusinessEndLabel(day){
+  const end=reservationLatestBusinessEnd(day);
+  if(end===null)return '';
+  return `${String(Math.floor(end/60)).padStart(2,'0')}:${String(end%60).padStart(2,'0')}`;
+}
+
 function reservationRgbValues(value){
   const match=String(value||'').match(
     /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/i
@@ -142,6 +208,18 @@ function normalizeReservationStatusAvailability(data){
       day.status.label='予約枠作成前';
       day.status.reason='この週は予約時間枠がまだ作成されていません。';
     }
+
+    if(reservationShouldShowBusinessEnded(day,data)){
+      const endLabel=reservationBusinessEndLabel(day);
+      day.status={
+        code:BUSINESS_ENDED_CODE,
+        label:'営業終了',
+        reason:endLabel
+          ?`当日の予約受付時間を過ぎています（最終枠終了 ${endLabel}）。`
+          :'当日の予約受付時間を過ぎています。'
+      };
+      day.availableSlots=[];
+    }
   });
 
   // Compatibility with data obtained before Worker v1.3.0:
@@ -199,6 +277,9 @@ reserveBand=function(day){
   if(day?.status?.code===CREATION_PENDING_CODE){
     return {code:'not-created',label:'予約枠作成前'};
   }
+  if(day?.status?.code===BUSINESS_ENDED_CODE){
+    return {code:'business-ended',label:'営業終了'};
+  }
   return originalReserveBandStatusFix(day);
 };
 
@@ -210,14 +291,28 @@ function applySpecialReservationRows(){
     const day=findDay(input.dataset.reserveDate);
     const publicationWaiting=day?.status?.code===PUBLICATION_WAITING_CODE;
     const creationPending=day?.status?.code===CREATION_PENDING_CODE;
+    const businessEnded=day?.status?.code===BUSINESS_ENDED_CODE;
     const row=input.closest('.reserve-day');
     if(!row)return;
 
     row.classList.toggle('publication-waiting',publicationWaiting);
     row.classList.toggle('creation-pending',creationPending);
+    row.classList.toggle('business-ended',businessEnded);
 
     const state=row.querySelector('.reserve-state');
     const detail=row.querySelector('.reserve-slots');
+
+    if(businessEnded){
+      if(state){
+        state.textContent='営業終了';
+        state.className='reserve-state business-ended';
+      }
+      if(detail)detail.textContent='本日の予約受付は終了しました';
+      input.checked=false;
+      input.disabled=true;
+      selectedReserveDates.delete(input.dataset.reserveDate);
+      return;
+    }
 
     if(publicationWaiting){
       if(state){
@@ -248,6 +343,17 @@ const originalRenderMenuDateStatusStatusFix=renderMenuDateStatus;
 renderMenuDateStatus=function(){
   const box=$('menuDateStatus');
   const ctx=getPostContext();
+
+  if(
+    box &&
+    !availabilityLoading &&
+    availability?.ok &&
+    ctx.selectedMenuDay?.status?.code===BUSINESS_ENDED_CODE
+  ){
+    box.className='menu-date-status business-ended';
+    box.innerHTML=`<div class="menu-date-status-top"><strong>${formatDate(ctx.selectedMenuDate,true)}の営業状況</strong><span class="menu-date-badge business-ended">営業終了</span></div><span>本日の予約受付は終了しました。</span>`;
+    return;
+  }
 
   if(
     box &&

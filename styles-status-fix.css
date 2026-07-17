@@ -63,3 +63,33 @@
   border:1px solid #beb8b2;
   color:#5f5a55;
 }
+
+
+/* v4.10.8 current-day business-ended state */
+.reserve-day.business-ended{
+  background:#eceae7;
+  border-color:#d5d0ca;
+  color:#817a73;
+}
+.reserve-day.business-ended .reserve-date,
+.reserve-day.business-ended .reserve-slots{
+  color:#817a73;
+}
+.reserve-state.business-ended{
+  background:#ddd9d4;
+  color:#6f6963;
+  border:1px solid #c8c2bc;
+}
+.menu-date-status.business-ended{
+  background:#eeece9;
+  border-color:#d5d0ca;
+  color:#716b65;
+}
+.menu-date-status.business-ended strong{
+  color:#5f5a55;
+}
+.menu-date-badge.business-ended{
+  background:#dcd8d3;
+  color:#625d58;
+  border:1px solid #c7c1bb;
+}

@@ -1,5 +1,5 @@
 const SIMPLE_UI_STORAGE_KEY='lemonUiMode';
-const POST_CONCIERGE_UI_VERSION='4.10.7';
+const POST_CONCIERGE_UI_VERSION='4.10.8';
 const POST_CONCIERGE_BUILD_DATE='2026-07-17';
 
 function setUiMode(mode,{save=true}={}){

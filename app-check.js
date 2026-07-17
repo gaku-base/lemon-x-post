@@ -98,11 +98,11 @@ function renderAvailabilityCheckTabs(pages){
   });
 }
 
-function makeCheckSlot(slot,range,pxPerMinute){
+function makeCheckSlot(slot,range,pxPerMinute,dayStatusCode=''){
   const start=checkMinutes(slot.start);
   if(start===null)return null;
   const duration=Math.max(20,Number(slot.durationMinutes)||75);
-  const state=checkSlotState(slot);
+  const state=dayStatusCode===BUSINESS_ENDED_CODE?'ended':checkSlotState(slot);
   const element=document.createElement('div');
   element.className=`availability-check-slot ${state}`;
   const top=(start-range.start)*pxPerMinute;
@@ -113,10 +113,10 @@ function makeCheckSlot(slot,range,pxPerMinute){
   element.style.height=`${height}px`;
   element.style.left=`calc(${lane/laneCount*100}% + 2px)`;
   element.style.width=`calc(${100/laneCount}% - 4px)`;
-  const badge=state==='full'?'満':state==='waiting'?'前':'仮';
+  const badge=state==='full'?'満':state==='waiting'?'前':state==='ended'?'終':'仮';
   const remaining=Number.isFinite(Number(slot.remaining))?`残${Number(slot.remaining)}`:'残—';
   element.innerHTML=`<div class="check-slot-line"><span class="check-slot-badge ${state}">${badge}</span><strong>${esc(slot.start||'--:--')}</strong></div><span>${duration}分</span><em>${esc(remaining)}</em>`;
-  element.title=`${slot.start||''}〜${slot.end||''}／${duration}分／${state==='available'?'予約可能':state==='full'?'満席':'予約枠公開前'}／${remaining}`;
+  element.title=`${slot.start||''}〜${slot.end||''}／${duration}分／${state==='available'?'予約可能':state==='full'?'満席':state==='ended'?'営業終了':'予約枠公開前'}／${remaining}`;
   return element;
 }
 
@@ -179,7 +179,7 @@ function renderAvailabilityCheckGrid(days){
       column.appendChild(empty);
     }else{
       slots.forEach(slot=>{
-        const item=makeCheckSlot(slot,range,pxPerMinute);
+        const item=makeCheckSlot(slot,range,pxPerMinute,day.status?.code);
         if(item)column.appendChild(item);
       });
     }
@@ -207,7 +207,7 @@ function availabilityCheckSummaryText(){
     }else{
       slots.forEach(slot=>{
         const state=checkSlotState(slot);
-        const stateText=state==='available'?'予約可能':state==='full'?'満席':'予約枠公開前';
+        const stateText=day.status?.code===BUSINESS_ENDED_CODE?'営業終了':state==='available'?'予約可能':state==='full'?'満席':'予約枠公開前';
         const remaining=Number.isFinite(Number(slot.remaining))?`残${Number(slot.remaining)}`:'残—';
         lines.push(`  ${slot.start||'--:--'}〜${slot.end||'--:--'} ${slot.durationMinutes||'—'}分 ${stateText} ${remaining}`);
       });
