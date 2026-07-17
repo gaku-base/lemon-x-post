@@ -44,11 +44,16 @@ function upsertIdentityLink(rel,href,sizes=''){
 
 function installHeaderLogo(){
   const heroBrand=document.querySelector('.hero-brand');
-  if(!heroBrand||heroBrand.dataset.postConciergeLogo==='installed')return;
+  if(!heroBrand)return;
   heroBrand.dataset.postConciergeLogo='installed';
   heroBrand.setAttribute('role','img');
   heroBrand.setAttribute('aria-label','レモン apps POST CONCIERGE ロゴ');
-  heroBrand.innerHTML='<span id="appVersion" class="version-badge hero-version-chip"></span>';
+  if(!$('appVersion')){
+    heroBrand.insertAdjacentHTML(
+      'beforeend',
+      '<span id="appVersion" class="version-badge hero-version-chip"></span>'
+    );
+  }
 }
 
 function installPostConciergeIdentity(){
