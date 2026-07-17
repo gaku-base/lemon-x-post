@@ -123,7 +123,7 @@ function buildXPostCandidate(content,mode){
 
 function chooseBestXPostCandidate(content){
   const candidates=[];
-  const openings=['full','none'];
+  const openings=['full'];
   const weathers=['full','compact','none'];
   const reservations=['full','compact'];
   const limitedModes=content.limited?['full','compact']:['none'];
@@ -238,7 +238,7 @@ function generatePost(options={}){
   const ctx=getPostContext();
   const displayDate=ctx.holidayMode?formatDate(ctx.postDate):formatDate(ctx.effectiveMenuDate);
   const menu=buildMenuLine(selectedMenus());
-  const opening=ctx.holidayMode?'':pick(learnedPatterns.openings,1);
+  const opening=buildDateAwareOpening(ctx);
   const weather=applyEmoji(buildWeatherText(),'weather');
   const limited=$('limitedInfo').value.trim();
   const reservationLines=buildReservationLines().map(text=>applyEmoji(text,'reserve'));

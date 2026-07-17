@@ -441,7 +441,7 @@ function generatePost(options={}){
   const ctx=getPostContext();
   const displayDate=ctx.holidayMode?formatDate(ctx.postDate):formatDate(ctx.effectiveMenuDate);
   const menu=buildMenuLine(selectedMenus());
-  const opening=ctx.holidayMode?'':pick(learnedPatterns.openings,1);
+  const opening=buildDateAwareOpening(ctx);
   const weather=applyEmoji(buildWeatherText(),'weather');
   const limited=$('limitedInfo').value.trim();
   const reservationLines=buildReservationLines().map(text=>applyEmoji(text,'reserve'));

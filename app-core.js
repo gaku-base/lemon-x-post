@@ -1,4 +1,4 @@
-const APP_VERSION='4.10.8';
+const APP_VERSION='4.10.10';
 const APP_BUILD_DATE='2026-07-17';
 const defaults={bread:{label:'パン・軽食',displayCount:6,items:[['サンド各種',1],['小倉トースト',1],['ハムチーズトースト',1]]},dessert:{label:'デザート',displayCount:6,items:[['プリンアラモード',1],['ベイクドチーズ',1],['ロールケーキ',1]]},ice:{label:'かき氷',displayCount:10,items:[['黒蜜きな粉',1],['ジンジャーココア',1],['クリームソーダ',1],['グリーンラッチー',1],['ピーチカスタード',1],['カフェオレ大福',1],['梅とうぐいす',1]]},other:{label:'その他',displayCount:6,items:[]}};
 let store=load();let activeCat='bread';let variant=0;let inputTimer;let emojiMode='none';let availability=null;let selectedReserveDates=new Set();let availabilityLoading=false;let weatherForecast=null;let weatherLoading=false;
@@ -18,3 +18,25 @@ function renderMenus(){const area=$('menuArea');area.innerHTML='';Object.entries
 function selectedMenus(){const result={};document.querySelectorAll('.chips input:checked').forEach(i=>(result[i.dataset.cat]??=[]).push(i.value));const custom=$('customMenu').value.trim();if(custom)(result.other??=[]).push(...custom.split(/[、,，]/).map(x=>x.trim()).filter(Boolean));return result}
 function buildMenuLine(groups){const chunks=[];Object.entries(store).forEach(([key,cat])=>{const list=groups[key]||[];if(!list.length)return;if(key==='ice')chunks.push(`かき氷（${list.join('、')}）`);else chunks.push(list.join('、'))});return chunks.join('、')||'メニューをご用意しております'}
 function syncDateShortcuts(){const base=$('postDate').value;document.querySelectorAll('[data-offset]').forEach(b=>b.classList.toggle('active',addDays(base,+b.dataset.offset)===$('menuDate').value))}
+
+function openingDateDistance(fromDate,toDate){
+  const [fy,fm,fd]=String(fromDate).split('-').map(Number);
+  const [ty,tm,td]=String(toDate).split('-').map(Number);
+  if([fy,fm,fd,ty,tm,td].some(value=>!Number.isFinite(value)))return 0;
+  return Math.round(
+    (Date.UTC(ty,tm-1,td)-Date.UTC(fy,fm-1,fd))/86400000
+  );
+}
+
+function buildDateAwareOpening(ctx){
+  if(ctx?.holidayMode)return '';
+
+  const postDate=ctx?.postDate||localIso();
+  const targetDate=ctx?.effectiveMenuDate||ctx?.selectedMenuDate||postDate;
+  const distance=openingDateDistance(postDate,targetDate);
+
+  if(distance<=0)return '本日も営業いたします。';
+  if(distance===1)return '明日も営業いたします。';
+
+  return `${formatDate(targetDate,true)}も営業いたします。`;
+}
