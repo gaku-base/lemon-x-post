@@ -127,6 +127,57 @@ $('addMenu').onclick=()=>{
 };
 $('newMenu').addEventListener('keydown',event=>{if(event.key==='Enter')$('addMenu').click()});
 
+
+function updatePostPlatformUi(){
+  const instagram=activePostPlatform==='instagram';
+  document.body.classList.toggle('instagram-post-mode',instagram);
+  document.body.classList.toggle('x-post-mode',!instagram);
+
+  const xTab=$('xPostTab');
+  const instagramTab=$('instagramPostTab');
+  if(xTab){
+    xTab.classList.toggle('active',!instagram);
+    xTab.setAttribute('aria-selected',String(!instagram));
+  }
+  if(instagramTab){
+    instagramTab.classList.toggle('active',instagram);
+    instagramTab.setAttribute('aria-selected',String(instagram));
+  }
+
+  if($('platformDescription')){
+    $('platformDescription').textContent=instagram
+      ?'Instagram向けに、メニュー・予約状況・案内を読みやすい長文でまとめます。'
+      :'X向けに220〜250カウントを目安として自動調整します。';
+  }
+  if($('generate')){
+    $('generate').textContent=instagram
+      ?'Instagram用の文章を作り直す'
+      :'X用の文章を作り直す';
+  }
+  if($('openX')){
+    $('openX').textContent=instagram?'Instagramを開く':'Xを開く';
+    $('openX').classList.toggle('btn-instagram',instagram);
+    $('openX').classList.toggle('btn-x',!instagram);
+  }
+}
+
+function setPostPlatform(platform){
+  const next=platform==='instagram'?'instagram':'x';
+  if(activePostPlatform===next){
+    updatePostPlatformUi();
+    return;
+  }
+  activePostPlatform=next;
+  localStorage.setItem('postConciergePlatform',next);
+  postTextEdited=false;
+  updatePostPlatformUi();
+  generatePost({force:true});
+}
+
+document.querySelectorAll('[data-platform]').forEach(button=>{
+  button.addEventListener('click',()=>setPostPlatform(button.dataset.platform));
+});
+
 document.querySelectorAll('[data-emoji]').forEach(button=>button.onclick=()=>{
   emojiMode=button.dataset.emoji;
   document.querySelectorAll('[data-emoji]').forEach(item=>item.classList.toggle('active',item===button));
@@ -184,7 +235,13 @@ $('copy').onclick=async()=>{
     alert('コピーできませんでした。Safariで開いてお試しください。');
   }
 };
-$('openX').onclick=()=>window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(currentPostText()),'_blank');
+$('openX').onclick=()=>{
+  if(activePostPlatform==='instagram'){
+    window.open('https://www.instagram.com/','_blank','noopener');
+    return;
+  }
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(currentPostText()),'_blank');
+};
 
 const today=localIso();
 $('postDate').value=today;
@@ -194,6 +251,7 @@ renderMenus();
 syncDateShortcuts();
 renderMenuDateStatus();
 updateWeatherDisplay();
+updatePostPlatformUi();
 generatePost();
 initLiveRefreshSettings();
 loadAvailability(true);

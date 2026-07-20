@@ -206,7 +206,7 @@ function chooseBestXPostCandidate(content){
   return {text,weight:xPostWeightedLength(text),informationScore:0,mode:shortest.mode,summarized:true};
 }
 
-function updatePostCharacterCount(){
+function updateXPostCharacterCount(){
   const text=currentPostText();
   const weightedLength=xPostWeightedLength(text);
   const counter=$('charCount');
@@ -232,7 +232,7 @@ function updatePostCharacterCount(){
   $('openX').disabled=empty||weightedLength>POST_X_HARD_MAX;
 }
 
-function generatePost(options={}){
+function generateXPost(options={}){
   if(postTextEdited&&options?.force!==true)return;
 
   const ctx=getPostContext();
@@ -259,7 +259,106 @@ function generatePost(options={}){
 
   $('preview').value=result.text;
   postTextEdited=false;
-  updatePostCharacterCount();
+  updateXPostCharacterCount();
   const time=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
   $('generatedAt').textContent=`更新 ${time}${result.summarized?'／X向け自動調整':''}`;
 }
+
+function instagramReservationParagraph(){
+  const lines=buildReservationLines();
+  if(!lines.length)return '';
+  return lines.join('\n');
+}
+
+function instagramMenuParagraph(menu){
+  if(!menu||menu==='メニューをご用意しております'){
+    return '本日のメニューをご用意しております。';
+  }
+  return `本日は\n${menu}\nをご用意しております。`;
+}
+
+function instagramSeasonalLine(){
+  const weather=buildWeatherText();
+  if(!weather)return '';
+  return applyEmoji(weather,'weather');
+}
+
+function instagramHashtags(ctx){
+  const tags=['#和洋喫茶レモンの木','#津市カフェ','#三重カフェ'];
+  const menus=selectedMenus();
+  if((menus.ice||[]).length)tags.push('#かき氷');
+  if((menus.bread||[]).length)tags.push('#厚焼き玉子サンド');
+  if((menus.dessert||[]).length)tags.push('#喫茶店スイーツ');
+  return tags.join(' ');
+}
+
+function buildInstagramClosing(ctx){
+  if(ctx.holidayMode)return buildClosing(ctx);
+  const variants=[
+    'ご予約、ご来店をお待ちしております。',
+    '皆さまのご来店をお待ちしております。',
+    'どうぞゆっくりとお過ごしください。'
+  ];
+  return applyEmoji(pick(variants,1),'close');
+}
+
+function generateInstagramPost(options={}){
+  if(postTextEdited&&options?.force!==true)return;
+
+  const ctx=getPostContext();
+  const displayDate=ctx.holidayMode?formatDate(ctx.postDate,true):formatDate(ctx.effectiveMenuDate,true);
+  const opening=buildDateAwareOpening(ctx);
+  const holidayIntro=buildHolidayIntroduction(ctx);
+  const menu=instagramMenuParagraph(buildMenuLine(selectedMenus()));
+  const weather=instagramSeasonalLine();
+  const reservation=instagramReservationParagraph();
+  const limited=$('limitedInfo').value.trim();
+  const closing=buildInstagramClosing(ctx);
+
+  const parts=[displayDate];
+  if(holidayIntro.length)parts.push('',...holidayIntro);
+  else if(opening)parts.push('',opening);
+  parts.push('',menu);
+  if(limited)parts.push('',limited);
+  if(weather)parts.push('',weather);
+  if(reservation)parts.push('',reservation);
+  parts.push(
+    '',
+    'ご予約はプロフィール記載の予約ページよりご確認ください。',
+    closing,
+    '',
+    instagramHashtags(ctx)
+  );
+
+  $('preview').value=parts.filter((part,index,array)=>!(
+    part===''&&index>0&&array[index-1]===''
+  )).join('\n');
+  postTextEdited=false;
+  updateInstagramCharacterCount();
+  const time=new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+  $('generatedAt').textContent=`更新 ${time}／Instagram用`;
+}
+
+function updateInstagramCharacterCount(){
+  const text=currentPostText();
+  const length=[...text].length;
+  const counter=$('charCount');
+  counter.textContent=`Instagram文字数 ${length} / 2,200`;
+  counter.setAttribute('aria-label',`Instagram文字数 ${length} / 2200`);
+  counter.classList.toggle('is-near-limit',length>=1800&&length<=2200);
+  counter.classList.toggle('is-over-limit',length>2200);
+  const empty=!text.trim();
+  $('copy').disabled=empty;
+  $('openX').disabled=empty;
+}
+
+function updatePostCharacterCount(){
+  if(activePostPlatform==='instagram')updateInstagramCharacterCount();
+  else updateXPostCharacterCount();
+}
+
+function generatePost(options={}){
+  if(activePostPlatform==='instagram')generateInstagramPost(options);
+  else generateXPost(options);
+}
+

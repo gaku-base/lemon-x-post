@@ -82,3 +82,48 @@
     background-size:calc(100% - 14px) auto;
   }
 }
+
+
+/* v4.11.0 X / Instagram tabs */
+.post-platform-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:2px 0 8px;
+  padding:5px;
+  border-radius:14px;
+  background:#eee9df;
+}
+.post-platform-tab{
+  appearance:none;
+  border:0;
+  border-radius:10px;
+  min-height:44px;
+  padding:9px 12px;
+  font:inherit;
+  font-weight:800;
+  color:#746b60;
+  background:transparent;
+}
+.post-platform-tab.active{
+  color:#fff;
+  background:#35302b;
+  box-shadow:0 2px 8px rgba(57,47,37,.17);
+}
+.post-platform-tab[data-platform="instagram"].active{
+  background:linear-gradient(120deg,#833ab4,#fd1d1d,#fcb045);
+}
+.platform-description{
+  margin:0 0 16px;
+  color:#756d63;
+  font-size:.88rem;
+  line-height:1.55;
+}
+.btn-instagram{
+  color:#fff;
+  background:linear-gradient(120deg,#833ab4,#fd1d1d,#fcb045);
+  border-color:transparent;
+}
+.instagram-post-mode .post-editor{
+  min-height:410px;
+}

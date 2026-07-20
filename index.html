@@ -9,18 +9,18 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/post-concierge-icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/post-concierge-icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./assets/post-concierge-icon-512.png">
-<link rel="stylesheet" href="styles-base.css?v=41010">
-<link rel="stylesheet" href="styles-manage.css?v=41010">
-<link rel="stylesheet" href="styles-live.css?v=41010">
-<link rel="stylesheet" href="styles-simple.css?v=41010">
-<link rel="stylesheet" href="styles-check.css?v=41010">
-<link rel="stylesheet" href="styles-status-fix.css?v=41010">
+<link rel="stylesheet" href="styles-base.css?v=4110">
+<link rel="stylesheet" href="styles-manage.css?v=4110">
+<link rel="stylesheet" href="styles-live.css?v=4110">
+<link rel="stylesheet" href="styles-simple.css?v=4110">
+<link rel="stylesheet" href="styles-check.css?v=4110">
+<link rel="stylesheet" href="styles-status-fix.css?v=4110">
 </head>
 <body class="simple-mode">
 <main class="app">
 <section class="hero compact-hero">
   <div class="hero-brand" role="img" aria-label="レモン apps POST CONCIERGE ロゴ">
-    <span class="version-badge hero-version-chip" id="appVersion">v4.10.10</span>
+    <span class="version-badge hero-version-chip" id="appVersion">v4.11.0</span>
   </div>
 </section>
 
@@ -131,15 +131,22 @@
 
 <section class="card post-card">
   <div class="card-title"><span class="step">4</span><span>投稿文</span></div>
+
+  <div class="post-platform-tabs" role="tablist" aria-label="投稿先">
+    <button type="button" id="xPostTab" class="post-platform-tab active" role="tab" aria-selected="true" data-platform="x">X用</button>
+    <button type="button" id="instagramPostTab" class="post-platform-tab" role="tab" aria-selected="false" data-platform="instagram">Instagram用</button>
+  </div>
+  <p class="platform-description" id="platformDescription">X向けに220〜250カウントを目安として自動調整します。</p>
+
   <label class="quick-label">絵文字</label>
   <div class="emoji-switch" id="emojiSwitch"><button class="emoji-btn active" data-emoji="none">なし</button><button class="emoji-btn" data-emoji="few">少なめ</button><button class="emoji-btn" data-emoji="many">多め</button></div>
-  <button class="btn-primary" id="generate">文章を作り直す</button>
+  <button class="btn-primary" id="generate">X用の文章を作り直す</button>
   <label class="post-editor-label" for="preview"><span>投稿文を編集</span><small>タップして直接修正できます</small></label>
   <textarea class="preview post-editor" id="preview" aria-describedby="charCount" spellcheck="true"></textarea>
   <div class="meta"><span class="char-counter" id="charCount" aria-live="polite">Xカウント 0 / 270（目標220〜250）</span><span id="generatedAt"></span></div>
   <div class="actions"><button class="btn-copy" id="copy">文章をコピー</button><button class="btn-x" id="openX">Xを開く</button></div>
 </section>
-<footer class="app-footer">レモン apps｜ポストコンシェルジュ <span id="appVersionFooter">v4.10.10</span></footer>
+<footer class="app-footer">レモン apps｜ポストコンシェルジュ <span id="appVersionFooter">v4.11.0</span></footer>
 </main>
 <div class="modal" id="modal"><section class="sheet"><div class="sheet-head"><h2>メニュー管理</h2><button class="close" id="closeModal">×</button></div><div class="tabs" id="tabs"></div><div class="helper">メニューをタップすると表示／非表示が切り替わります。長押しして移動すると並べ替え、左へスワイプすると削除ボタンが出ます。</div><div class="manage-controls"><div><label class="small">投稿画面に表示する数</label><input class="count" id="displayCount" type="number" min="1" max="30"></div></div><div class="add-row"><input id="newMenu" type="text" placeholder="新しいメニュー名"><button class="add-btn" id="addMenu">追加</button></div><div class="menu-list" id="menuList"></div></section></div>
 
@@ -172,14 +179,14 @@
   </div>
 </div>
 <script src="vendor/twitter-text-3.1.0.min.js?v=310"></script>
-<script src="app-core.js?v=41010"></script>
-<script src="app-weather.js?v=41010"></script>
-<script src="app-reserve.js?v=41010"></script>
-<script src="app-live.js?v=41010"></script>
-<script src="app-status-fix.js?v=41010"></script>
-<script src="app-x-post.js?v=41010"></script>
-<script src="app-ui.js?v=41010"></script>
-<script src="app-simple.js?v=41010"></script>
-<script src="app-check.js?v=41010"></script>
+<script src="app-core.js?v=4110"></script>
+<script src="app-weather.js?v=4110"></script>
+<script src="app-reserve.js?v=4110"></script>
+<script src="app-live.js?v=4110"></script>
+<script src="app-status-fix.js?v=4110"></script>
+<script src="app-x-post.js?v=4110"></script>
+<script src="app-ui.js?v=4110"></script>
+<script src="app-simple.js?v=4110"></script>
+<script src="app-check.js?v=4110"></script>
 </body>
 </html>
