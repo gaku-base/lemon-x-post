@@ -1,7 +1,7 @@
 {
   "ok": true,
   "stage": "weekly-column-extraction-v4-fast",
-  "fetchedAt": "2026-08-16T06:27:20.314Z",
+  "fetchedAt": "2026-08-16T08:20:29.865Z",
   "sourceUrl": "https://airrsv.net/lemonnoki/calendar",
   "startDate": "2026-08-16",
   "daysRequested": 4,
