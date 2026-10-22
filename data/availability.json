@@ -1,7 +1,7 @@
 {
   "ok": true,
   "stage": "weekly-column-extraction-v4-fast",
-  "fetchedAt": "2026-10-22T06:55:51.582Z",
+  "fetchedAt": "2026-10-22T13:21:10.200Z",
   "sourceUrl": "https://airrsv.net/lemonnoki/calendar",
   "startDate": "2026-10-22",
   "daysRequested": 4,
@@ -489,17 +489,17 @@
       "status": {
         "code": "available",
         "label": "空きあり",
-        "reason": "7件の選択可能な空き枠があります。"
+        "reason": "6件の選択可能な空き枠があります。"
       },
       "slots": [
         {
           "start": "10:30",
           "end": "11:45",
           "durationMinutes": 75,
-          "remaining": 2,
-          "full": false,
-          "clickable": true,
-          "text": "仮 10:30 75分 残2",
+          "remaining": 0,
+          "full": true,
+          "clickable": false,
+          "text": "満 仮 10:30 75分 残0",
           "className": "dataListItem js-lane is-label01",
           "anchorClassName": "dataLinkBox js-dataLinkBox",
           "href": "https://airrsv.net/lemonnoki/calendar",
@@ -641,27 +641,6 @@
         }
       ],
       "availableSlots": [
-        {
-          "start": "10:30",
-          "end": "11:45",
-          "durationMinutes": 75,
-          "remaining": 2,
-          "full": false,
-          "clickable": true,
-          "text": "仮 10:30 75分 残2",
-          "className": "dataListItem js-lane is-label01",
-          "anchorClassName": "dataLinkBox js-dataLinkBox",
-          "href": "https://airrsv.net/lemonnoki/calendar",
-          "pointerEvents": "auto",
-          "backgroundColor": "rgb(222, 243, 251)",
-          "color": "rgb(85, 85, 85)",
-          "parentClasses": [
-            "dataList",
-            "cellListItem",
-            "cellList is-data",
-            "cellListWrap js-selectMenu"
-          ]
-        },
         {
           "start": "11:45",
           "end": "13:00",
